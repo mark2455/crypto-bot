@@ -371,6 +371,15 @@
   - **XRP: 롱온리** buy=-2.0,exit=-0.5 (행 대부분 3칸) → +164.2%(145건,승률67%,4/4, 추가확정)
 파일: strategies/confirmed/weighted_close_backtest.py
 
+## ⭐⭐⭐ 신규 확정 (루프 47회차 — 4코인, DOT/LINK 초고수익)
+- **Median Price 괴리 — 종가를 아예 빼고 (고가+저가)/2 봉 범위 중심만 사용.**
+  - **DOT: 롱온리** buy=-4.0,exit=1.0 (buy-3.0~-4.0 3개행 12칸 역대급) → +261.1%(46건,승률83%,4/4, 추가확정)
+  - **LINK: 롱온리** buy=-2.5,exit=0.5 (buy-2.5~-3.5 3개행 12칸 역대급) → +216.4%(132건,승률67%,4/4, 추가확정)
+  - **XRP: 롱온리** buy=-2.0,exit=-0.5 (exit=-0.5 열 5칸 연속) → +100.3%(152건,승률64%,4/4, 추가확정)
+  - **BNB: 롱온리** buy=-3.5,exit=0.5 (3칸, 거래16건으로 적음) → +28.9%(16건,승률94%,4/4, 참고용)
+  - ETC: 4/4 없음 → 미확정
+파일: strategies/confirmed/median_price_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
