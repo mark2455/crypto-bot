@@ -413,6 +413,13 @@
 
 | Volume-Weighted CMO(VW-RSI 성공 패턴을 CMO에 적용) | DOT buy=-60,exit=+20 단일 고립셀만 4/4(사방 전부 3/4), 나머지 코인 전부 4/4 없음, 롱숏은 대부분 마이너스 | 같은 "거래량 가중" 아이디어라도 평활방식(EMA vs 롤링합)에 따라 결과가 다름을 확인, 기각 |
 
+## ⭐ 신규 확정 (루프 55회차 — VW-RSI 패턴이 TSI에도 재현)
+- **Volume-Weighted TSI — TSI(이중EMA 평활)에 거래량 가중.** EMA기반 지표라 VW-RSI와 같은 패턴 확인.
+  - **BNB: 롱온리** buy=-30,exit=0 (buy-30~-35×exit0~10 2D블록) → +87.6%(97건,승률72%,4/4, 추가확정)
+  - LINK: 단일 고립셀만 4/4 → 미확정
+  - ETC/SOL: 4/4 없음 → 미확정
+파일: strategies/confirmed/vw_tsi_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
