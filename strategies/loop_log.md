@@ -285,6 +285,8 @@
   - LINK: 3/4가 최선 → 미확정
 파일: strategies/confirmed/mass_index_backtest.py
 
+| Chande Kroll Stop(%Position, ATR+극값 2단계 트레일링 채널) | 4/4 전혀 없음, 롱숏은 대부분 마이너스(-30~-96%), ETH만 지속적으로 3/4에 근접했으나 못 넘음 | 2단계 필터링이 오히려 신호를 늦춰 실효성 없는 것으로 판단, 기각 |
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
