@@ -397,6 +397,8 @@
   - **BNB: 롱온리** buy=-70,exit=40 (행 3칸 연속) → +101.1%(62건,승률73%,4/4, 추가확정)
 파일: strategies/confirmed/camarilla_backtest.py
 
+| A/D Line 원본 z-score(Chaikin의 이중EMA差 단계 생략) | 4/4 전혀 없음, 롱숏은 거의 전멸(대부분 -20~94%), 3/4도 코인마다 제각각 임계값에서 산발적 | Chaikin Oscillator의 이중EMA差 단계가 실제로 신호정제에 중요했다는 방증. 기각 |
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
