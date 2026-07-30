@@ -14,8 +14,8 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (44개 파일)
-│   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (48개 파일)
+│   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (41개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
 │   └── other_markets/ ← 크립토 4/4 검증 틀 밖의 별도 실험(한국·미국 주식 페어트레이딩, 계절성 등).
@@ -173,6 +173,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Coefficient of Variation z-score (상대분산도) | LTC(롱온리 +108%) | 표준편차/평균으로 스케일 제거한 순수 분산도 — 낮으면 컨솔리데이션, MA200 방향 추종. Volume Profile POC 대비는 낮아 대표는 아님 | [`coeff_variation_backtest.py`](strategies/confirmed/coeff_variation_backtest.py) |
 | Chaikin Money Flow (구간 MFV합/거래량합) | ETH(롱숏 +71%) | Chaikin Osc(누적ADL EMA차)·raw ADL과 달리 비누적·자연유계(-1~+1) 비율. Coppock Curve 대비는 낮아 대표는 아님 | [`cmf_backtest.py`](strategies/confirmed/cmf_backtest.py) |
 | Volume Price Trend (거래량×가격변화율 누적) | LINK(롱숏 +45%) | OBV(부호만)·ADL(범위기반)·Force Index(절대값)와 달리 퍼센트 변화율을 거래량에 곱해 누적. FRAMA 대비는 낮아 대표는 아님, 거래 16건으로 빈도 낮은 편 | [`vpt_backtest.py`](strategies/confirmed/vpt_backtest.py) |
+| ADX/DMI (+DI−−DI, Wilder 방향성지표) | BNB(롱온리 +47%) | Vortex와 달리 DM을 상승폭/하락폭 직접비교로 정의, True Range 정규화+Wilder 지수평활. buy −25~−20 두 행(10칸) 역대급 넓은 2D블록. Weighted Close 대비는 낮아 대표는 아님 | [`adx_dmi_backtest.py`](strategies/confirmed/adx_dmi_backtest.py) |
 
 ---
 
@@ -228,7 +229,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 
 ---
 
-## ❌ 기각된 지표·전략 (`strategies/rejected/`, 33개 파일)
+## ❌ 기각된 지표·전략 (`strategies/rejected/`, 41개 파일)
 
 전부 4/4년 기준을 통과하지 못했거나(코인 대부분 손실/불안정), 구조적으로 반복 실패가 확인된 것들.
 탈락 이유별로 묶었다 — 전체 검증 원본 로그는 [`strategies/loop_log.md`](strategies/loop_log.md).

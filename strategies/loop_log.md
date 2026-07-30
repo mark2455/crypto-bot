@@ -460,6 +460,19 @@
   - 나머지 코인: 4/4 없음
 파일: strategies/confirmed/vpt_backtest.py
 
+## ⭐⭐⭐ 신규 확정 (루프 62회차 — BNB 1코인, 역대급 넓은 2D 블록. 사용자 복귀로 루프 종료)
+- **ADX/DMI(+DI−−DI) — Vortex와 달리 DM을 상승폭/하락폭 직접비교로 정의, TR정규화+Wilder평활.**
+  - **BNB: 롱온리** buy −25.0~−20.0 두 행 전체(exit 5칸×2행=10칸) 4/4, 인접행도 절벽없이 2~3/4 →
+    buy=-20.0,exit=0.0 → +46.63%(76건,승률70%,4/4, 추가확정)
+    BNB 기존 대표(Weighted Close +132.9%)보다 낮아 헤드라인 교체 없음
+  - DOT 롱숏도 buy=-25.0 행 전체 4/4 확인(부가 후보, 파일 문서엔 BNB만 상세 기록)
+파일: strategies/confirmed/adx_dmi_backtest.py
+
+## 루프 세션 종료 (2026-07-30) — 사용자 복귀
+루프 58~62회차(5회 반복) 동안 신규 확정 5건(Coefficient of Variation·LTC, Chaikin Money Flow·ETH,
+Volume Price Trend·LINK, ADX/DMI·BNB) + 기각 1건(Positive Volume Index). 사용자가 돌아와서
+"그만하고 정리해줘" 요청 — 루프 중단. confirmed/ 파일 수 누계는 RESULTS.md 저장소구조 섹션 참고.
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —

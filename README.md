@@ -15,8 +15,8 @@
 |---|---|
 | `candles.py`, `config.py`, `check.py`, `fetch_history.py`, `indicator_analysis.py` | 공통 인프라 — 데이터 로딩, 거래소 연결, 공용 지표 함수 |
 | `connors_rsi_backtest.py` | 최초 확정 전략(Connors RSI, 기준선) — 다른 여러 파일이 공유 참조하므로 루트에 위치 |
-| `strategies/confirmed/` | ✅ **4/4년 검증 통과** — 실전 적용 가능한 17개 전략 파일 |
-| `strategies/rejected/` | ❌ **기각/탈락** — 검증에서 떨어진 33개 지표·패턴·조합 (실패 이유도 기록해둠) |
+| `strategies/confirmed/` | ✅ **4/4년 검증 통과** — 실전 적용 가능한 48개 전략 파일 |
+| `strategies/rejected/` | ❌ **기각/탈락** — 검증에서 떨어진 41개 지표·패턴·조합 (실패 이유도 기록해둠) |
 | `strategies/loop_log.md` | 지표 하나씩 검증한 상세 원본 로그 (30개 이상) |
 | `experiments/other_markets/` | 크립토 4/4 검증 틀 밖의 별도 실험 (한국/미국 주식 페어트레이딩, 계절성 등) — 이 결과들과 무관, 참고용 |
 | `.env.example` | API 키 템플릿 (복사해서 `.env` 로 채움) |
