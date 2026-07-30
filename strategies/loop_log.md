@@ -266,6 +266,17 @@
   - SOL: 단일 고립셀만 4/4 → 미확정
 파일: strategies/confirmed/linreg_backtest.py
 
+## ⭐⭐ 신규 확정 (루프 35회차 — SOL 역대 최고수익, 헤드라인 교체 + 중요 캐비어트)
+- **Ulcer Index(z-score) — "얼마나 깊고 오래 하락 중인가"(고통의 RMS)만 측정**, 지금까지
+  방향성만 보던 지표들과 완전히 다른 축.
+  - **SOL: 롱온리** buy=-1.25,exit=0.0 (buy 1.25~1.75 넓은 연속블록 7칸+) → 4년 **+306.1%**
+    (128건, 4/4) — **헤드라인 교체**(구: VWAP +235.7%). **⚠️승률 45.3%로 이례적으로 낮음** —
+    다른 확정 전략(대부분 60~90%대)과 리스크 성격이 다름(자주 잃되 크게 먹는 구조), RESULTS.md에
+    강조 캐비어트 추가함
+  - DOT: buy=-1.5,exit=0.0 단일 고립셀만 4/4 → 미확정(우연 판정)
+  - BTC/ETH: 최대 3/4, 4/4 없음 → 미확정 (억지로 겨냥 안 함, 지시대로)
+파일: strategies/confirmed/ulcer_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
