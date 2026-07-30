@@ -195,5 +195,13 @@
   - SOL: buy=-1.50,exit=0.5 단일 고립셀만 4/4(양옆 전부 3/4) → **우연 판정, 미확정**
 파일: strategies/confirmed/eom_backtest.py
 
+## ⭐ 신규 확정 (루프 27회차)
+- **CCI(Commodity Channel Index) 롱온리 — BNB만 확정.** 전형가격+평균절대편차 방식이라
+  기각된 price_zscore(종가+표준편차)와 다름. buy=-150~-175 × exit=-50~0 작은 연속블록(3칸)
+  → 최대 buy=-175,exit=-50, 4년 +79%, 4/4
+  - DOT: buy=-225에서 exit=-25/0만 3/4로 실패가 끼는 체커보드 패턴 → 경계선, **미확정**(보수적 기각)
+  - BTC 등 나머지: 4/4 없음 → 기각
+파일: strategies/confirmed/cci_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
