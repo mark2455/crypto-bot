@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (40개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (41개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -160,6 +160,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Weighted Close 괴리 | LINK(롱온리 +196%), XRP(롱온리 +164%) | 전형가격 대비 종가 2배 가중 — BNB 헤드라인 포함 3코인 확정 | [`weighted_close_backtest.py`](strategies/confirmed/weighted_close_backtest.py) |
 | Median Price 괴리 ((H+L)/2, 종가 무시) | DOT(+261%), LINK(+216%), XRP(+100%), BNB(+29%) | 종가를 아예 빼고 봉 범위의 중심만 사용 — 4코인 확정, DOT·LINK 특히 고수익 | [`median_price_backtest.py`](strategies/confirmed/median_price_backtest.py) |
 | Trend Intensity Index (평균선 위/아래 위치의 RSI식 평활) | LINK(롱온리 +171%) | 가격변화가 아닌 "MA 대비 위치"에 RSI 로직 적용 | [`tii_backtest.py`](strategies/confirmed/tii_backtest.py) |
+| Camarilla Pivot (전일 종가+변동폭 배수 기준) | DOT(+88%), LINK(+77%), BTC(+82%), BNB(+101%) | Pivot Point와 달리 전일 종가 자체를 기준점 삼음 — 4코인 확정 | [`camarilla_backtest.py`](strategies/confirmed/camarilla_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |

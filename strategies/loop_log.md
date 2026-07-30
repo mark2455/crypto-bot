@@ -389,6 +389,14 @@
   - ETC: 3/4가 최선 → 미확정
 파일: strategies/confirmed/tii_backtest.py
 
+## ⭐⭐⭐ 신규 확정 (루프 50회차 — 4코인, 세션 50회차 기념)
+- **Camarilla Pivot — Pivot Point와 달리 전일 종가 자체를 기준점 삼고 전일 변동폭 배수로 정규화.**
+  - **DOT: 롱온리** buy=-50,exit=-20 → +87.6%(129건,승률57%,4/4, 추가확정)
+  - **LINK: 롱온리** buy=-40,exit=0 → +77.0%(191건,승률55%,4/4, 추가확정)
+  - **BTC: 롱온리** buy=-40,exit=40 → +81.8%(167건,승률69%,4/4, 추가확정)
+  - **BNB: 롱온리** buy=-70,exit=40 (행 3칸 연속) → +101.1%(62건,승률73%,4/4, 추가확정)
+파일: strategies/confirmed/camarilla_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
