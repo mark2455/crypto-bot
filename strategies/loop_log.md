@@ -307,6 +307,18 @@
   - ETC: 3/4가 최선 → 미확정
 파일: strategies/confirmed/pivot_backtest.py
 
+## ⭐⭐⭐⭐ 신규 확정 (루프 40회차 — 4코인, 헤드라인 2개 교체(LINK/ETC), 세션 최고 성과 중 하나)
+- **FRAMA(Fractal Adaptive Moving Average) — McGinley와 다른 프랙탈차원 기반 적응형 이동평균.**
+  - **LINK: 롱온리** buy=-2.0,exit=0.5 (buy -2.0~-3.0 3개 행 전부 12칸 역대급 견고) → +301.1%
+    (198건,승률65%,4/4) — **헤드라인 교체**(구: Qstick +262.9%)
+  - **ETC: 롱온리** buy=-2.0,exit=-0.5 (buy -2.0~-2.5 넓은블록) → +100.9%(168건,승률66%,4/4)
+    — **헤드라인 교체**(구: VWAP +79.1%)
+  - **XRP: 롱숏** buy=-2.0,exit=0.0 (2칸 연속) → +121.8%(270건,승률64%,4/4, 추가확정)
+  - **SOL: 롱온리** buy=-1.5,exit=1.0 (2칸 연속) → +195.1%(262건,승률66%,4/4, 추가확정)
+  - BNB: 서로 안 이어진 별개 고립셀 2개뿐 → 미확정
+  - LTC: 4/4 없음 → 미확정
+파일: strategies/confirmed/frama_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
