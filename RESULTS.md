@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (24개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (25개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -43,7 +43,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | **DOT** | Keltner Channel %K | 롱숏 | −91.0% | **+340.7%** | 206 | 74% |
 | **LTC** | Volume Profile POC | 롱온리 | −26.2% | **+207.8%** | 53 | 85% |
 | **ETH** | Coppock Curve | 롱숏 | +12.1% | **+166.7%** | 93 | 72% |
-| **XRP** | Ichimoku 구름중심 괴리 | 롱온리 | +194.2% | +77.4% | 25 | 92% |
+| **XRP** | McGinley Dynamic 괴리 | 롱숏 | +194.2% | **+196.0%** | 207 | 71% |
 | **BNB** | HMA 괴리% | 롱온리 | +95.7% | +90.5% | 107 | 69% |
 | **SOL** | KST | 롱온리 | +73.3% | **+106.7%** | 47 | 77% |
 | **LINK** | Qstick (시가 사용) | 롱온리 | +7.5% | **+262.9%** | 165 | — |
@@ -84,10 +84,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - BTC는 거래가 워낙 드물어(4년 18건) 기존 Coppock(4건)보다 훨씬 통계적으로 신뢰 가능해진 대표 교체.
   Coppock도 여전히 확정 상태 — 4년 +11.1%, "추가 확정 지표" 표 참고
 
-### XRP — Ichimoku 구름중심 괴리 (buy=−4, exit=−1, 롱온리)
-파일: [`strategies/confirmed/ichimoku_backtest.py`](strategies/confirmed/ichimoku_backtest.py)
-- 전환선(9)/기준선(26)/스팬B(52) 중간값으로 구름중심 계산 (전통적 크로스오버 방식 대신 괴리%로 변형 — 크로스오버는 실패 확인됨)
-- **진입**: 괴리 < −4% & 종가>MA200 · **청산**: 괴리 > −1%
+### XRP — McGinley Dynamic 괴리 (buy=−2.0, exit=0.0, 롱숏)
+파일: [`strategies/confirmed/mcginley_backtest.py`](strategies/confirmed/mcginley_backtest.py)
+- McGinley Dynamic = 재귀식 적응형 이동평균(가격 변화 속도에 따라 스스로 반응속도 조절), 괴리% = (종가−MD)/종가×100
+- **진입**: 괴리 < −2.0% & 종가>MA200(롱) / >2.0% & 종가<MA200(숏) · **청산**: ±0.0%
+- (참고: 기존 대표였던 Ichimoku 구름중심 괴리도 여전히 확정 상태 — [`ichimoku_backtest.py`](strategies/confirmed/ichimoku_backtest.py), buy=−4,exit=−1, 4년 +77.4%. "추가 확정 지표" 표 참고)
 
 ### BNB — HMA(Hull이동평균) 괴리% (buy=−2, exit=0, 롱온리)
 파일: [`strategies/confirmed/hma_backtest.py`](strategies/confirmed/hma_backtest.py)
@@ -130,6 +131,8 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Coppock Curve | BTC (구 대표, KST로 교체됨) | 4년 +11.1%(4건) — 여전히 확정 상태, 거래가 적어 대표에서 밀림 | [`coppock_backtest.py`](strategies/confirmed/coppock_backtest.py) |
 | OBV z-score | SOL (구 대표, KST로 교체됨) | 4년 +79.1%(10건) — 여전히 확정 상태 | [`obv_backtest.py`](strategies/confirmed/obv_backtest.py) |
 | KST (4시간축 ROC 가중합) | DOT(롱숏 +138%), LTC(롱온리 +46%) | Coppock/TRIX와 달리 4개 기간 ROC를 1:2:3:4 가중합산 | [`kst_backtest.py`](strategies/confirmed/kst_backtest.py) |
+| Ichimoku 구름중심 괴리 | XRP (구 대표, McGinley로 교체됨) | 4년 +77.4%(25건) — 여전히 확정 상태 | [`ichimoku_backtest.py`](strategies/confirmed/ichimoku_backtest.py) |
+| McGinley Dynamic 괴리 | DOT(롱온리 +145%), LINK(롱온리 +60%), BNB(롱온리 +59%), SOL(롱온리 +40%) | 재귀식 적응형 이동평균(가격 변화 속도에 따라 반응속도 자체가 바뀜) | [`mcginley_backtest.py`](strategies/confirmed/mcginley_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |
