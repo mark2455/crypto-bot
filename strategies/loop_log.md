@@ -168,5 +168,15 @@
 
 | Ehlers COG(재구현, z-score) 롱온리 — LINK | buy=-2.0,-1.5 부근 6칸 클러스터(최대+208%) — **LINK 6번째+ 확인지표**. 원래 버전은 버그였으나 z-score 정규화로 수정 후 재검증 성공 | 확정(LINK 한정) |
 
+| Relative Volatility Index(Dorsey, span평활 재구현) | buy_th 15~40 전 구간에서 9코인 전부 4/4 없음 (대부분 ±5%p 이내 미미한 손익) | **기존 vol_rsi_backtest.py(루프20회차)와 동일 지표였음** — 이름만 보고 다른 지표로 착각해 중복 검증. 평활방식만 다름(span=14 vs Wilder alpha=1/14)이라 결론 동일하게 재확인, 파일은 중복이라 미보관 |
+
+## ⭐ 신규 확정 (루프 24회차)
+- **Elder's Force Index(EFI, z-score) 롱온리** — "가격변화×거래량"을 직접 곱하는 방식으로
+  OBV/Chaikin/Klinger와 메커니즘이 다름. 롱숏대칭은 롱온리보다 전부 나빠서 기각, 롱온리만 채택.
+  - **DOT: exit=0.0에서 buy −1.25~−2.00 4칸 연속 4/4** (견고) — 최대 buy=−1.25 exit=0.0 → +81%
+  - **ETC: exit=0.0에서 buy −1.00~−1.50 3칸 연속 4/4** (견고) — 최대 buy=−1.00 exit=0.0 → +120%
+  - LINK/SOL/BNB: 격자탐색 전 구간 3/4가 최선 → 미확정
+파일: strategies/confirmed/force_index_backtest.py
+
 ## 다음 시도 후보
-- (새 카테고리 계속 탐색)
+- (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
