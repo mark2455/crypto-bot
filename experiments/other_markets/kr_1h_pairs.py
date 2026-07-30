@@ -17,7 +17,7 @@ import pandas as pd
 from statsmodels.tsa.stattools import coint
 from kr_coint import STOCKS
 
-DATA = os.path.join(os.path.dirname(__file__), "data_kr_1h")
+DATA = os.path.join(os.path.dirname(__file__), "..", "..", "data_kr_1h")
 FORMATION = 500     # 형성 구간(시간, ≈70 거래일)
 REESTIMATE = 35     # 재추정 주기(≈주 1회)
 PVAL = 0.05

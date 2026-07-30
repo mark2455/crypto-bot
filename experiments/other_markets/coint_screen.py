@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import coint
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 PVAL = 0.05
 
 

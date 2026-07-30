@@ -4,6 +4,32 @@
 **방법론**: 4년을 4개 연도 구간으로 나눠 **전 구간 플러스(4/4)** 인 (지표, 코인) 조합만 "확정"으로 인정.
 수수료 왕복 0.08% 반영, 파라미터 격자탐색으로 견고성(우연 아님) 확인. 총 30개 이상의 지표 검증.
 
+## 0. 저장소 구조
+
+코드가 "검증된 것"과 "폐기된 것"이 한 폴더에 섞여 있으면 찾기 어려워서, 결과에 따라 폴더를 나눴다.
+
+```
+crypto-bot/
+├── candles.py, config.py, check.py,          ← 공통 인프라 (데이터 로딩·거래소 연결)
+│   fetch_history.py, indicator_analysis.py,
+│   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
+├── strategies/
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (17개 파일)
+│   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
+│   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
+├── experiments/
+│   └── other_markets/ ← 크립토 4/4 검증 틀 밖의 별도 실험(한국·미국 주식 페어트레이딩, 계절성 등).
+│                          이 리포트의 확정/기각 판정과 무관 — 참고용으로만 남겨둠
+└── RESULTS.md (이 문서), README.md
+```
+
+**실행법이 바뀌었다** (하위 폴더로 옮기면서 `candles.py` 등 공통 모듈을 찾도록 경로 지정 필요):
+```bash
+cd ~/crypto-bot
+PYTHONPATH=. venv/bin/python strategies/confirmed/keltner_backtest.py
+PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
+```
+
 ---
 
 ## 1. 확정 전략 9종 — 한눈에 보기
@@ -34,40 +60,65 @@
 공통: `MAX_HOLD=100봉(≈4일)`, 수수료 왕복 0.08%, **MA200 위에서만 롱, MA200 아래에서만 숏** (추세 순응형 평균회귀).
 
 ### DOT — Keltner Channel %K (buy=0.05, exit=0.6, 롱숏)
+파일: [`strategies/confirmed/keltner_backtest.py`](strategies/confirmed/keltner_backtest.py)
 - 중심선=EMA(종가,20), ATR(10), 상단=중심+2×ATR, 하단=중심−2×ATR
 - %K = (종가−하단)/(상단−하단) → 0=하단밴드 근접, 1=상단밴드 근접
 - **롱 진입**: %K < 0.05 (밴드 하단 거의 터치) & 종가>MA200 · **청산**: %K > 0.6
 - **숏 진입**: %K > 0.95 & 종가<MA200 · **청산**: %K < 0.4
 
 ### LTC — Volume Profile POC (buy=−2, exit=1, 롱온리)
+파일: [`strategies/confirmed/volprofile_backtest.py`](strategies/confirmed/volprofile_backtest.py)
 - 최근 200봉을 20개 가격구간으로 나눠 거래량이 가장 많이 몰린 구간(POC=시장이 합의한 "공정가치")을 24시간마다 재계산
 - 괴리% = (종가−POC)/종가×100
 - **진입**: 괴리 < −2% (공정가치보다 싸게 거래) & 종가>MA200 · **청산**: 괴리 > 1%
 
 ### ETH / BTC — Coppock Curve (롱숏)
+파일: [`strategies/confirmed/coppock_backtest.py`](strategies/confirmed/coppock_backtest.py) (내부적으로 `hma_backtest.py`의 WMA 함수 재사용)
 - Coppock = WMA(ROC(14봉)+ROC(11봉), 10) — 원래 월봉 장기저점 포착용 지표를 시간봉에 맞게 적용
 - **ETH 진입**: Coppock < −6 & 종가>MA200(롱) / >6 & 종가<MA200(숏) · **청산**: ±2
 - **BTC 진입**: Coppock < −12(롱) / >12(숏) · **청산**: ±2 (BTC는 변동성이 낮아 더 극단적인 값 요구)
 
 ### XRP — Ichimoku 구름중심 괴리 (buy=−4, exit=−1, 롱온리)
+파일: [`strategies/confirmed/ichimoku_backtest.py`](strategies/confirmed/ichimoku_backtest.py)
 - 전환선(9)/기준선(26)/스팬B(52) 중간값으로 구름중심 계산 (전통적 크로스오버 방식 대신 괴리%로 변형 — 크로스오버는 실패 확인됨)
 - **진입**: 괴리 < −4% & 종가>MA200 · **청산**: 괴리 > −1%
 
 ### BNB — HMA(Hull이동평균) 괴리% (buy=−2, exit=0, 롱온리)
+파일: [`strategies/confirmed/hma_backtest.py`](strategies/confirmed/hma_backtest.py)
 - HMA = WMA(2×WMA(종가,10)−WMA(종가,20), 4) — 일반 이동평균보다 지연이 훨씬 짧음
 - **진입**: 괴리 < −2% & 종가>MA200 · **청산**: 괴리 > 0%
 
 ### SOL — OBV z-score (buy=−2.0, exit=0.5, 롱온리)
+파일: [`strategies/confirmed/obv_backtest.py`](strategies/confirmed/obv_backtest.py)
 - OBV = 누적(종가상승시 +거래량, 하락시 −거래량), 절대값 스케일이 코인마다 달라 롤링 z-score로 정규화
 - **진입**: z < −2.0 & 종가>MA200 · **청산**: z > 0.5
 
 ### LINK — Chaikin Oscillator (buy=−1.5, exit=0, 롱온리)
+파일: [`strategies/confirmed/chaikin_osc_backtest.py`](strategies/confirmed/chaikin_osc_backtest.py)
 - ADL(누적자금흐름)에 MACD(3,10) 적용 후 z-score 정규화
 - **진입**: z < −1.5 & 종가>MA200 · **청산**: z > 0
 
 ### ETC — PPO (buy=−2, exit=1, 롱숏)
+파일: [`strategies/confirmed/ppo_backtest.py`](strategies/confirmed/ppo_backtest.py)
 - PPO = (EMA12−EMA26)/EMA26×100 (MACD를 %로 표현해 코인간 스케일 문제 해결)
 - **롱 진입**: PPO < −2 & 종가>MA200 · **청산**: PPO > 1 · **숏**: 대칭
+
+### + 기준선(Baseline) — Connors RSI 롱숏대칭
+파일: [`strategies/confirmed/connors_ls_backtest.py`](strategies/confirmed/connors_ls_backtest.py) (지표 자체는 루트의 [`connors_rsi_backtest.py`](connors_rsi_backtest.py)), 견고성 검사: [`connors_robustness.py`](strategies/confirmed/connors_robustness.py), 최종 저장본: [`connors_rsi_ls.py`](strategies/confirmed/connors_rsi_ls.py)
+- CRSI = (RSI(3) + 연속상승일수RSI(2) + ROC(100)순위) / 3 — 최초로 확정된 전략, 이후 모든 지표의 "기준선" 역할
+- **롱 진입**: CRSI<10 & 종가>MA200 · **청산**: CRSI>50 · **숏**: 대칭 · **확정**: DOT/LINK/ETC 4/4
+
+### 추가로 확정된 지표 (표 1의 "대표 지표"에는 안 들었지만 별도로 4/4 통과)
+같은 코인에 복수 지표가 확정되는 경우 표 1엔 최고수익 하나만 실었다. 아래는 나머지 확정 지표들 — 실전에서 대표 지표의 대안/분산용으로 쓸 수 있다.
+
+| 지표 | 확정 코인 | 핵심 로직 | 파일 |
+|---|---|---|---|
+| CMO (평활화 없는 모멘텀) | LINK, XRP(중간신뢰도) | (상승합−하락합)/(상승합+하락합)×100, 되돌림 진입 | [`cmo_backtest.py`](strategies/confirmed/cmo_backtest.py) |
+| TSI (이중평활 모멘텀) | DOT | 가격변화를 EMA 이중평활 후 재정규화 | [`tsi_backtest.py`](strategies/confirmed/tsi_backtest.py) |
+| Elder Ray (추세EMA 괴리) | LINK | Bull/Bear Power = 고가/저가 − EMA13 | [`elder_ray_backtest.py`](strategies/confirmed/elder_ray_backtest.py) |
+| NVI (스마트머니 거래량) | BTC (롱온리 전용) | 거래량 감소일에만 누적 — "조용한 매집" 포착 | [`nvi_backtest.py`](strategies/confirmed/nvi_backtest.py) |
+| TRIX (3중평활 모멘텀) | ETC | EMA를 3번 중첩 후 변화율 | [`trix_backtest.py`](strategies/confirmed/trix_backtest.py) |
+| Ehlers COG (무게중심) | LINK (버그 수정 후 재확정) | 최근 N개 가격의 가중무게중심, z-score 정규화 | [`cog_backtest.py`](strategies/confirmed/cog_backtest.py) |
 
 ---
 
@@ -123,14 +174,66 @@
 
 ---
 
-## ❌ 기각된 지표 (30개 이상 검증)
+## ❌ 기각된 지표·전략 (`strategies/rejected/`, 33개 파일)
 
-MA교차, RSI(2)평균회귀, MACD신호, SuperTrend+ADX, 삼각수렴, 이중바닥/천장, 깃발형, Ehlers Fisher
-Transform, Ehlers Laguerre RSI, Aroon, RVI, MFI, Ultimate Oscillator, Williams %R, Vortex
-Indicator, Klinger, DPO, Awesome Oscillator, Balance of Power, Parabolic SAR, Schaff Trend
-Cycle, RSI 다이버전스, Choppiness 필터, Kaufman Efficiency Ratio, Volatility RSI, Stochastic RSI
+전부 4/4년 기준을 통과하지 못했거나(코인 대부분 손실/불안정), 구조적으로 반복 실패가 확인된 것들.
+탈락 이유별로 묶었다 — 전체 검증 원본 로그는 [`strategies/loop_log.md`](strategies/loop_log.md).
 
-전체 상세 로그: [`strategies/loop_log.md`](strategies/loop_log.md)
+**초기 기반 전략 (최초 탐색, 전부 손실)**
+| 전략 | 파일 | 탈락 이유 |
+|---|---|---|
+| MA 교차 | [`backtest.py`](strategies/rejected/backtest.py), [`optimize.py`](strategies/rejected/optimize.py) | train셋 최고 파라미터가 test셋에서 실패(과최적화) |
+| 지지/저항 + 손익비 | [`sr_backtest.py`](strategies/rejected/sr_backtest.py) | 수수료 반영 시 꾸준한 손실 |
+| RSI(2) 평균회귀 | [`rsi_backtest.py`](strategies/rejected/rsi_backtest.py), [`multicoin_rsi.py`](strategies/rejected/multicoin_rsi.py) | 3코인 교차검증 모두 손실 |
+| 레버리지+손절 | [`leverage_backtest.py`](strategies/rejected/leverage_backtest.py) | 레버리지가 손실을 배로 증폭(전략 자체 기대값이 음수라 손절도 못 살림) |
+
+**"자기 자신과 크로스" 계열 (전부 과매매/휩쏘로 실패 — 설계원칙 1)**
+| 지표 | 파일 |
+|---|---|
+| MACD 신호선 크로스 | [`macd_signal_backtest.py`](strategies/rejected/macd_signal_backtest.py) |
+| Ehlers Fisher Transform | [`fisher_transform_backtest.py`](strategies/rejected/fisher_transform_backtest.py) |
+| Ehlers Laguerre RSI | [`laguerre_rsi_backtest.py`](strategies/rejected/laguerre_rsi_backtest.py) |
+| RVI (신호선 크로스) | [`rvi_backtest.py`](strategies/rejected/rvi_backtest.py) |
+| Stochastic RSI | [`stochrsi_backtest.py`](strategies/rejected/stochrsi_backtest.py) |
+| RSI 다이버전스 | [`rsi_divergence_backtest.py`](strategies/rejected/rsi_divergence_backtest.py) |
+
+**추세추종형 스톱앤리버스 (설계원칙 2 — 이 시간대·자산군엔 안 맞음)**
+| 지표 | 파일 |
+|---|---|
+| Parabolic SAR | [`psar_backtest.py`](strategies/rejected/psar_backtest.py) |
+| SuperTrend + ADX | [`tradingview_strategies.py`](strategies/rejected/tradingview_strategies.py) |
+| Schaff Trend Cycle | [`stc_backtest.py`](strategies/rejected/stc_backtest.py) |
+| Aroon | [`aroon_backtest.py`](strategies/rejected/aroon_backtest.py) |
+| Vortex Indicator | [`vortex_backtest.py`](strategies/rejected/vortex_backtest.py) |
+| Kaufman Efficiency Ratio | [`efficiency_ratio_backtest.py`](strategies/rejected/efficiency_ratio_backtest.py) |
+
+**오실레이터/거래량 계열 (임계값 재보정해도 견고성 부족)**
+| 지표 | 파일 |
+|---|---|
+| MFI | [`mfi_backtest.py`](strategies/rejected/mfi_backtest.py) |
+| Ultimate Oscillator | [`uo_backtest.py`](strategies/rejected/uo_backtest.py) |
+| Williams %R | [`williams_r_backtest.py`](strategies/rejected/williams_r_backtest.py) |
+| Klinger | [`klinger_backtest.py`](strategies/rejected/klinger_backtest.py) |
+| DPO | [`dpo_backtest.py`](strategies/rejected/dpo_backtest.py) |
+| Awesome Oscillator | [`awesome_osc_backtest.py`](strategies/rejected/awesome_osc_backtest.py) |
+| Balance of Power | [`bop_backtest.py`](strategies/rejected/bop_backtest.py) |
+| Volatility RSI | [`vol_rsi_backtest.py`](strategies/rejected/vol_rsi_backtest.py) |
+| 가격 Z-score (대조군) | [`price_zscore_backtest.py`](strategies/rejected/price_zscore_backtest.py) |
+
+**차트 패턴 (지표가 아닌 구조 기반, 전부 기각)**
+| 패턴 | 파일 |
+|---|---|
+| 삼각수렴 돌파 | [`triangle_backtest.py`](strategies/rejected/triangle_backtest.py) |
+| 이중바닥/이중천장, 깃발형 | [`chart_patterns.py`](strategies/rejected/chart_patterns.py) |
+
+**조합/필터 (설계원칙 3 — 좋은 신호에 뭘 더하면 오히려 나빠짐)**
+| 조합 | 파일 |
+|---|---|
+| MACD약신호+MA/추세/볼밴/ADX 필터 조합 | [`combo_signal_backtest.py`](strategies/rejected/combo_signal_backtest.py) |
+| Connors RSI + 삼각수렴 (AND/OR) | [`combo_indicator_pattern.py`](strategies/rejected/combo_indicator_pattern.py) |
+| Connors RSI + Choppiness Index 필터 | [`chop_filter_backtest.py`](strategies/rejected/chop_filter_backtest.py) |
+| "Full Crypto Pack" (MACD+RSI+OBV+EMA) | [`tradingview_strategies.py`](strategies/rejected/tradingview_strategies.py) |
+| 변동성 돌파 (Larry Williams) | [`vbreakout_backtest.py`](strategies/rejected/vbreakout_backtest.py) |
 
 ---
 

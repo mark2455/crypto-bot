@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 from candles import load_candles_csv
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 
 WINDOW = 100        # z-score 롤링 창(시간)
 Z_ENTRY = 2.0       # 이만큼 벌어지면 진입

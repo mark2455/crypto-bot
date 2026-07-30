@@ -18,7 +18,7 @@ import os
 from candles import load_candles_csv
 from rsi_backtest import rsi, sma, RSI_LEN, MA_TREND, MA_EXIT, FEE, MAX_HOLD
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 COINS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 
 RSI_BUY = 10        # 이 아래 = 과매도 → 롱

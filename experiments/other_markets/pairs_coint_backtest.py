@@ -20,7 +20,7 @@ import pandas as pd
 from statsmodels.tsa.stattools import coint
 from candles import load_candles_csv
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 
 FORMATION = 500     # 헤지비율·공적분 추정에 쓰는 직전 구간(시간)
 REESTIMATE = 24     # 이 봉마다 β·공적분 재추정(하루)

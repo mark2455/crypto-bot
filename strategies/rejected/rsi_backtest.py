@@ -16,7 +16,7 @@ import numpy as np
 from config import make_exchange, SYMBOL
 from candles import fetch_candles, load_candles_csv
 
-CSV_PATH = os.path.join(os.path.dirname(__file__), "data", "BTCUSDT_1h.csv")
+CSV_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "BTCUSDT_1h.csv")
 TIMEFRAME = "1h"
 LIMIT = 1000
 

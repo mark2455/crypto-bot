@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 from candles import load_candles_csv
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 
 LOOKBACK = 168      # 모멘텀 측정 기간(시간) = 7일
 REBALANCE = 24      # 리밸런스 주기(시간) = 1일

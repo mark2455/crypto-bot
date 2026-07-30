@@ -20,7 +20,7 @@ import pandas as pd
 from candles import load_candles_csv
 from indicator_analysis import rsi, macd, adx, ONE_YEAR
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 FEE = 0.0004
 MAX_HOLD = 100
 

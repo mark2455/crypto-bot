@@ -14,7 +14,7 @@ from candles import load_candles_csv
 from connors_rsi_backtest import run
 from indicator_analysis import ONE_YEAR
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 COINS = ["ATOMUSDT", "BCHUSDT", "DOTUSDT", "LINKUSDT", "LTCUSDT", "XRPUSDT"]
 BUY_THS = [5, 10, 15, 20]
 EXIT_THS = [40, 50, 60, 70]

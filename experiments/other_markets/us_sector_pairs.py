@@ -19,7 +19,7 @@ from statsmodels.tsa.stattools import coint
 from kr_1h_pairs import run, show
 
 warnings.filterwarnings("ignore")
-CACHE = os.path.join(os.path.dirname(__file__), "data_us_1h")
+CACHE = os.path.join(os.path.dirname(__file__), "..", "..", "data_us_1h")
 PVAL = 0.05
 
 SECTORS = {

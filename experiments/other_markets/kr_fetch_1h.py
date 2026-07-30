@@ -12,7 +12,7 @@ import pandas as pd
 from kr_coint import STOCKS
 
 warnings.filterwarnings("ignore")
-OUT = os.path.join(os.path.dirname(__file__), "data_kr_1h")
+OUT = os.path.join(os.path.dirname(__file__), "..", "..", "data_kr_1h")
 
 
 def main():

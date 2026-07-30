@@ -20,7 +20,7 @@ from statsmodels.tsa.stattools import coint
 from kr_1h_pairs import run, show
 
 warnings.filterwarnings("ignore")
-CACHE = os.path.join(os.path.dirname(__file__), "data_kr_1h")
+CACHE = os.path.join(os.path.dirname(__file__), "..", "..", "data_kr_1h")
 PVAL = 0.05
 
 # 섹터별 대장주 (코스닥 중심, 일부는 코스피 이전 종목 포함 — 코드가 자동 판별)

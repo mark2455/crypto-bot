@@ -20,7 +20,7 @@ import numpy as np
 from candles import load_candles_csv
 from indicator_analysis import build, close_scale, HORIZON, ONE_YEAR
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 FEE = 0.0004
 
 

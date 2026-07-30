@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from candles import load_candles_csv
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 COINS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 
 K = 0.5          # 돌파 계수 (전일 변동폭의 절반)

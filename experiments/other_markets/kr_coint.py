@@ -14,7 +14,7 @@ import pandas as pd
 import FinanceDataReader as fdr
 from statsmodels.tsa.stattools import coint
 
-CACHE = os.path.join(os.path.dirname(__file__), "data_kr")
+CACHE = os.path.join(os.path.dirname(__file__), "..", "..", "data_kr")
 START, END = "2021-01-01", "2026-07-28"
 PVAL = 0.05
 

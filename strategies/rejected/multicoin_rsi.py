@@ -9,7 +9,7 @@ import os
 from candles import load_candles_csv
 from rsi_backtest import run
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 COINS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 
 
