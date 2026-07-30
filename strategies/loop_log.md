@@ -401,6 +401,16 @@
 
 | Percentile Rank(최근N봉 종가 분포 내 순위, Donchian과 달리 전체분포 반영) | LINK buy=25,exit=40 단일 고립셀만 4/4, BNB는 4/4 전혀 없음 | 고립셀 기각, 기각 |
 
+## ⭐⭐⭐⭐ 신규 확정 (루프 53회차 — 세션 최고 성과, DOT 헤드라인 교체)
+- **Volume-Weighted RSI — RSI의 gain/loss에 거래량 가중치 추가.** 기각된 MFI(방향만 분류,
+  크기 무시)와 다름(크기 그대로 살리고 거래량만 추가).
+  - **DOT: 롱숏대칭** buy=25,exit=60 (buy=25 행 exit 50~60 3칸 연속) → 4년 **+438.2%**
+    (357건, 승률69%, 4/4) — **헤드라인 교체**(구: Keltner +340.7%, 206건 — 거래수·수익 둘 다 개선)
+  - **LINK: 롱온리** buy=25,exit=55 (buy20~35×exit=40 4칸+buy=25 행 대부분) → +171.9%
+    (178건,승률65%,4/4, 추가확정)
+  - **BNB: 롱온리** buy=25,exit=45 (행 3칸 연속) → +38.2%(223건,승률68%,4/4, 추가확정)
+파일: strategies/confirmed/vw_rsi_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —

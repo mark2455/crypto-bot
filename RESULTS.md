@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (41개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (42개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -40,7 +40,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 
 | 코인 | 지표 | 방향 | 그냥 보유(4년) | 전략(4년) | 거래수 | 승률 |
 |---|---|---|---:|---:|---:|---:|
-| **DOT** | Keltner Channel %K | 롱숏 | −91.0% | **+340.7%** | 206 | 74% |
+| **DOT** | Volume-Weighted RSI | 롱숏 | −91.0% | **+438.2%** | 357 | 69% |
 | **LTC** | Volume Profile POC | 롱온리 | −26.2% | **+207.8%** | 53 | 85% |
 | **ETH** | Coppock Curve | 롱숏 | +12.1% | **+166.7%** | 93 | 72% |
 | **XRP** | McGinley Dynamic 괴리 | 롱숏 | +194.2% | **+196.0%** | 207 | 71% |
@@ -59,12 +59,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 
 공통: `MAX_HOLD=100봉(≈4일)`, 수수료 왕복 0.08%, **MA200 위에서만 롱, MA200 아래에서만 숏** (추세 순응형 평균회귀).
 
-### DOT — Keltner Channel %K (buy=0.05, exit=0.6, 롱숏)
-파일: [`strategies/confirmed/keltner_backtest.py`](strategies/confirmed/keltner_backtest.py)
-- 중심선=EMA(종가,20), ATR(10), 상단=중심+2×ATR, 하단=중심−2×ATR
-- %K = (종가−하단)/(상단−하단) → 0=하단밴드 근접, 1=상단밴드 근접
-- **롱 진입**: %K < 0.05 (밴드 하단 거의 터치) & 종가>MA200 · **청산**: %K > 0.6
-- **숏 진입**: %K > 0.95 & 종가<MA200 · **청산**: %K < 0.4
+### DOT — Volume-Weighted RSI (buy=25, exit=60, 롱숏)
+파일: [`strategies/confirmed/vw_rsi_backtest.py`](strategies/confirmed/vw_rsi_backtest.py)
+- 일반 RSI에 거래량 가중치 추가: gain/loss(가격변화 크기)에 거래량을 곱해서 평균 — 0~100 유계
+- **롱 진입**: VW-RSI < 25 & 종가>MA200 · **청산**: VW-RSI > 60 · **숏**: 대칭
+- (참고: 기존 대표였던 Keltner Channel도 여전히 확정 상태 — [`keltner_backtest.py`](strategies/confirmed/keltner_backtest.py), buy=0.05,exit=0.6, 4년 +340.7%(206건). "추가 확정 지표" 표 참고)
 
 ### LTC — Volume Profile POC (buy=−2, exit=1, 롱온리)
 파일: [`strategies/confirmed/volprofile_backtest.py`](strategies/confirmed/volprofile_backtest.py)
@@ -161,6 +160,8 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Median Price 괴리 ((H+L)/2, 종가 무시) | DOT(+261%), LINK(+216%), XRP(+100%), BNB(+29%) | 종가를 아예 빼고 봉 범위의 중심만 사용 — 4코인 확정, DOT·LINK 특히 고수익 | [`median_price_backtest.py`](strategies/confirmed/median_price_backtest.py) |
 | Trend Intensity Index (평균선 위/아래 위치의 RSI식 평활) | LINK(롱온리 +171%) | 가격변화가 아닌 "MA 대비 위치"에 RSI 로직 적용 | [`tii_backtest.py`](strategies/confirmed/tii_backtest.py) |
 | Camarilla Pivot (전일 종가+변동폭 배수 기준) | DOT(+88%), LINK(+77%), BTC(+82%), BNB(+101%) | Pivot Point와 달리 전일 종가 자체를 기준점 삼음 — 4코인 확정 | [`camarilla_backtest.py`](strategies/confirmed/camarilla_backtest.py) |
+| Keltner Channel %K | DOT (구 대표, Volume-Weighted RSI로 교체됨) | 4년 +340.7%(206건, 승률74%) — 여전히 확정 상태 | [`keltner_backtest.py`](strategies/confirmed/keltner_backtest.py) |
+| Volume-Weighted RSI | LINK(롱온리 +172%), BNB(롱온리 +38%) | RSI의 gain/loss에 거래량 가중 — DOT 헤드라인 포함 3코인 확정 | [`vw_rsi_backtest.py`](strategies/confirmed/vw_rsi_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |
