@@ -172,6 +172,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Qstick (시가 사용, 캔들몸통 방향) | LINK(+263%,롱온리), BNB(+85%,롱온리), DOT(+176%,롱숏) | 유일하게 시가를 쓰는 지표. (종가-시가) 평균 | [`qstick_backtest.py`](strategies/confirmed/qstick_backtest.py) |
 | Coefficient of Variation z-score (상대분산도) | LTC(롱온리 +108%) | 표준편차/평균으로 스케일 제거한 순수 분산도 — 낮으면 컨솔리데이션, MA200 방향 추종. Volume Profile POC 대비는 낮아 대표는 아님 | [`coeff_variation_backtest.py`](strategies/confirmed/coeff_variation_backtest.py) |
 | Chaikin Money Flow (구간 MFV합/거래량합) | ETH(롱숏 +71%) | Chaikin Osc(누적ADL EMA차)·raw ADL과 달리 비누적·자연유계(-1~+1) 비율. Coppock Curve 대비는 낮아 대표는 아님 | [`cmf_backtest.py`](strategies/confirmed/cmf_backtest.py) |
+| Volume Price Trend (거래량×가격변화율 누적) | LINK(롱숏 +45%) | OBV(부호만)·ADL(범위기반)·Force Index(절대값)와 달리 퍼센트 변화율을 거래량에 곱해 누적. FRAMA 대비는 낮아 대표는 아님, 거래 16건으로 빈도 낮은 편 | [`vpt_backtest.py`](strategies/confirmed/vpt_backtest.py) |
 
 ---
 

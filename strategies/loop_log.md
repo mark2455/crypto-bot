@@ -451,6 +451,15 @@
 
 | Positive Volume Index(PVI, NVI의 정반대 조건 — 거래량 "증가"일만 누적) | LTC 롱숏 buy=-0.5행 exit=0.0만 3/4로 갭, BNB 롱숏 대각선 고립셀 2개, 나머지 최고 3/4 | NVI(거래량감소일 누적)는 확정됐지만 정반대 조건(거래량증가일 누적)은 예측력 없음 — "조용한 날의 움직임이 유의미"라는 스마트머니 가설이 비대칭적으로 성립함을 보여주는 대조사례. 기각 |
 
+## ⭐⭐⭐ 신규 확정 (루프 61회차 — LINK 1코인, 역대 가장 넓은 단축 블록)
+- **Volume Price Trend(VPT) — OBV/ADL/Force Index와 달리 "퍼센트 변화율"을 거래량에 곱해 누적.**
+  - **LINK: 롱숏** buy=-2.0 고정, exit -0.5~+0.5 전체 5칸 연속 4/4, 인접 buy(-2.5,-3.0)도 3/4로
+    완만히 감소(절벽 없음) → buy=-2.0,exit=0.0 → +45.24%(16건,승률75%,4/4, 추가확정, 거래빈도 낮음 유의)
+    LINK 기존 대표(FRAMA +301.1%)보다 낮아 헤드라인 교체 없음
+  - DOT/XRP/ETC/BTC: 4/4 히트는 있으나 전부 고립셀·대각선 산발 → 기각
+  - 나머지 코인: 4/4 없음
+파일: strategies/confirmed/vpt_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
