@@ -171,6 +171,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Donchian Channel %Position | BNB(+80%), XRP(+59%), LINK(+97%) | 평활화 없는 순수 N봉 최고/최저가 채널. 롱온리만 확정 | [`donchian_backtest.py`](strategies/confirmed/donchian_backtest.py) |
 | Qstick (시가 사용, 캔들몸통 방향) | LINK(+263%,롱온리), BNB(+85%,롱온리), DOT(+176%,롱숏) | 유일하게 시가를 쓰는 지표. (종가-시가) 평균 | [`qstick_backtest.py`](strategies/confirmed/qstick_backtest.py) |
 | Coefficient of Variation z-score (상대분산도) | LTC(롱온리 +108%) | 표준편차/평균으로 스케일 제거한 순수 분산도 — 낮으면 컨솔리데이션, MA200 방향 추종. Volume Profile POC 대비는 낮아 대표는 아님 | [`coeff_variation_backtest.py`](strategies/confirmed/coeff_variation_backtest.py) |
+| Chaikin Money Flow (구간 MFV합/거래량합) | ETH(롱숏 +71%) | Chaikin Osc(누적ADL EMA차)·raw ADL과 달리 비누적·자연유계(-1~+1) 비율. Coppock Curve 대비는 낮아 대표는 아님 | [`cmf_backtest.py`](strategies/confirmed/cmf_backtest.py) |
 
 ---
 

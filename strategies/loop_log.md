@@ -439,6 +439,16 @@
   - ETC 롱숏: 고립셀 1개(buy=-1.8,exit=-0.6)뿐 → 기각(미확정 처리)
 파일: strategies/confirmed/coeff_variation_backtest.py
 
+## ⭐⭐ 신규 확정 (루프 59회차 — ETH 1코인, 2D 견고 블록)
+- **Chaikin Money Flow(CMF) — 같은 저자의 Chaikin Osc/raw ADL과 달리 비누적·자연유계(-1~+1) 비율.**
+  - **ETH: 롱숏** buy -0.30~-0.25 × exit 0.05~0.10 5칸 2D블록(코너 1칸만 3/4 갭) →
+    buy=-0.25,exit=0.10 → +70.92%(102건,승률67%,4/4, 추가확정)
+    ETH 기존 대표(Coppock +166.7%)보다 낮아 헤드라인 교체 없음
+  - XRP 롱온리: buy=-0.25 고정 exit -0.05~0.00 2칸만 4/4 → 4칸 미만 기준 미달로 미확정
+  - DOT 롱숏: 고립셀 2개(체커보드) → 기각
+  - 나머지 6코인: 4/4 없음 → 미확정
+파일: strategies/confirmed/cmf_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
