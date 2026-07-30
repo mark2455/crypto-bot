@@ -336,6 +336,15 @@
   - 전부 기존 헤드라인에 못 미쳐 추가확정으로만 기록
 파일: strategies/confirmed/rwi_backtest.py
 
+## ⭐⭐ 신규 확정 (루프 43회차 — 2코인)
+- **Bollinger Bands %B — Keltner와 같은 채널개념이지만 ATR 대신 표준편차.** 초기 탐색(MA200
+  필터 없던 시절)에는 "하단이탈=하락지속" 경고가 있었으나, MA200 필터 붙이니 정상 작동 확인.
+  - **BNB: 롱온리** buy=0.02,exit=0.4 (buy0.02~0.10×exit0.4~0.5 견고블록 6칸) → +83.5%
+    (274건,승률70%,4/4, 추가확정)
+  - **LINK: 롱온리** buy=0.10,exit=0.6 (얇지만 인접한 2칸) → +98.7%(297건,승률64%,4/4, 추가확정)
+  - DOT/XRP: 3/4가 최선 → 미확정
+파일: strategies/confirmed/bollinger_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
