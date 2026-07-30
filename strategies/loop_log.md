@@ -428,6 +428,8 @@
   - **BTC: 롱숏** buy -1.5~-2.5 넓은블록 → buy=-2.0,exit=1.0 → +37.1%(18건,승률89%,4/4, 추가확정)
 파일: strategies/confirmed/vw_ppo_backtest.py
 
+| Volume-Weighted TRIX(3중VWMA 평활, VW-PPO 패턴을 TRIX에 적용) | LINK/DOT 롱숏에서 ★셀이 나오지만 체커보드/고립 패턴(연속블록 아님), 나머지 코인 4/4 전혀 없음 | "VWMA 교체" 패턴이 PPO(2단 평활)에는 통했지만 TRIX(3단 평활, 노이즈 누적)에는 안 통함. 기각 |
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
