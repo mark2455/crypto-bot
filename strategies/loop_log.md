@@ -203,5 +203,14 @@
   - BTC 등 나머지: 4/4 없음 → 기각
 파일: strategies/confirmed/cci_backtest.py
 
+## ⭐⭐ 신규 확정 (루프 28회차 — 3코인, EOM 이후 두 번째로 큰 수확)
+- **Donchian Channel %Position 롱온리** — Keltner(EMA+ATR)와 달리 평활화 없는 순수 N봉
+  최고가/최저가 채널. 전부 롱숏보다 롱온리 우수.
+  - **BNB: buy=0.02~0.05 × exit=0.3~0.6 넓은 2D블록(7칸+ 전부 4/4)** — 역대급 견고. 최대 buy=0.05,exit=0.5 → +80.3%(135건)
+  - **XRP: buy=0.02 행 전체(5칸) 4/4** — 최대 buy=0.02,exit=0.4 → +58.9%(29건)
+  - **LINK: exit=0.7 열 전체(3칸) 4/4** — 최대 buy=0.02,exit=0.7 → +96.8%(57건)
+  - ETC: buy=0.02,exit=0.7 단일 고립셀 → 미확정
+파일: strategies/confirmed/donchian_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
