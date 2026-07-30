@@ -449,6 +449,8 @@
   - 나머지 6코인: 4/4 없음 → 미확정
 파일: strategies/confirmed/cmf_backtest.py
 
+| Positive Volume Index(PVI, NVI의 정반대 조건 — 거래량 "증가"일만 누적) | LTC 롱숏 buy=-0.5행 exit=0.0만 3/4로 갭, BNB 롱숏 대각선 고립셀 2개, 나머지 최고 3/4 | NVI(거래량감소일 누적)는 확정됐지만 정반대 조건(거래량증가일 누적)은 예측력 없음 — "조용한 날의 움직임이 유의미"라는 스마트머니 가설이 비대칭적으로 성립함을 보여주는 대조사례. 기각 |
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
