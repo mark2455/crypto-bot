@@ -221,5 +221,7 @@
   - SOL: buy=-1.00과 buy=-1.75 두 지점만 4/4, 사이(−1.25,−1.50)는 전부 3/4인 갭 패턴 → **미확정**
 파일: strategies/confirmed/qstick_backtest.py
 
+| Chaikin Volatility(변동성 변화율, Marc Chaikin — Chaikin Osc와 다른 지표) | 4/4 전혀 없음, 롱숏은 거의 전멸(대부분 -60~95%), 3/4도 코인마다 제각각 임계값에서 산발적 | "변동성 수축 후 방향베팅"은 극단값+되돌림 프레임과 안 맞음, 기각 |
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
