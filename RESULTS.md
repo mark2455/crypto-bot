@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (37개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (38개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -44,7 +44,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | **LTC** | Volume Profile POC | 롱온리 | −26.2% | **+207.8%** | 53 | 85% |
 | **ETH** | Coppock Curve | 롱숏 | +12.1% | **+166.7%** | 93 | 72% |
 | **XRP** | McGinley Dynamic 괴리 | 롱숏 | +194.2% | **+196.0%** | 207 | 71% |
-| **BNB** | HMA 괴리% | 롱온리 | +95.7% | +90.5% | 107 | 69% |
+| **BNB** | Weighted Close 괴리 | 롱온리 | +95.7% | **+132.9%** | 146 | 74% |
 | **SOL** | Pivot Point 괴리 | 롱숏 | +73.3% | **+311.9%** | 211 | 66% |
 | **LINK** | FRAMA 괴리 | 롱온리 | +7.5% | **+301.1%** | 198 | 65% |
 | **ETC** | FRAMA 괴리 | 롱온리 | −83.2% | **+100.9%** | 168 | 66% |
@@ -93,10 +93,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - **진입**: 괴리 < −2.0% & 종가>MA200(롱) / >2.0% & 종가<MA200(숏) · **청산**: ±0.0%
 - (참고: 기존 대표였던 Ichimoku 구름중심 괴리도 여전히 확정 상태 — [`ichimoku_backtest.py`](strategies/confirmed/ichimoku_backtest.py), buy=−4,exit=−1, 4년 +77.4%. "추가 확정 지표" 표 참고)
 
-### BNB — HMA(Hull이동평균) 괴리% (buy=−2, exit=0, 롱온리)
-파일: [`strategies/confirmed/hma_backtest.py`](strategies/confirmed/hma_backtest.py)
-- HMA = WMA(2×WMA(종가,10)−WMA(종가,20), 4) — 일반 이동평균보다 지연이 훨씬 짧음
-- **진입**: 괴리 < −2% & 종가>MA200 · **청산**: 괴리 > 0%
+### BNB — Weighted Close 괴리 (buy=−1.5, exit=0.0, 롱온리)
+파일: [`strategies/confirmed/weighted_close_backtest.py`](strategies/confirmed/weighted_close_backtest.py)
+- Weighted Close = (고가+저가+2×종가)/4 — CCI의 전형가격(H+L+C)/3보다 종가에 가중치를 더 줌
+- **진입**: 괴리 < −1.5% & 종가>MA200 · **청산**: 괴리 > 0%
+- (참고: 기존 대표였던 HMA도 여전히 확정 상태 — [`hma_backtest.py`](strategies/confirmed/hma_backtest.py), buy=−2,exit=0, 4년 +90.5%. "추가 확정 지표" 표 참고)
 
 ### SOL — Pivot Point 괴리 (buy=−3.0, exit=0.5, 롱숏)
 파일: [`strategies/confirmed/pivot_backtest.py`](strategies/confirmed/pivot_backtest.py)
@@ -155,6 +156,8 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | KST | BTC (구 대표, Twiggs로 교체됨) | 4년 +32.5%(18건, 승률83%) — 여전히 확정 상태 | [`kst_backtest.py`](strategies/confirmed/kst_backtest.py) |
 | Twiggs Money Flow (True Range 기반) | DOT(롱온리 +95%), BTC (구 대표, VHF로 교체됨) | Chaikin 개선판, 갭까지 반영한 True Range 사용. BTC 4년 +56.1%(322건) 여전히 확정 상태 | [`twiggs_backtest.py`](strategies/confirmed/twiggs_backtest.py) |
 | Vertical Horizontal Filter (추세강도 게이지) | BTC만 | 방향성 오실레이터 아닌 "추세 vs 횡보" 스칼라 측정 — "횡보 중 매수" 라는 다른 접근으로 BTC 역대 최고수익 달성 | [`vhf_backtest.py`](strategies/confirmed/vhf_backtest.py) |
+| HMA 괴리% | BNB (구 대표, Weighted Close로 교체됨) | 4년 +90.5%(107건, 승률69%) — 여전히 확정 상태 | [`hma_backtest.py`](strategies/confirmed/hma_backtest.py) |
+| Weighted Close 괴리 | LINK(롱온리 +196%), XRP(롱온리 +164%) | 전형가격 대비 종가 2배 가중 — BNB 헤드라인 포함 3코인 확정 | [`weighted_close_backtest.py`](strategies/confirmed/weighted_close_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |

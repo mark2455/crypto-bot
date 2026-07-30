@@ -364,6 +364,13 @@
   - BNB: 3/4가 최선 → 미확정
 파일: strategies/confirmed/vhf_backtest.py
 
+## ⭐⭐⭐ 신규 확정 (루프 46회차 — 3코인, BNB 헤드라인 교체)
+- **Weighted Close 괴리 — CCI 전형가격(H+L+C)/3보다 종가에 가중치 더 줌((H+L+2C)/4).**
+  - **BNB: 롱온리** buy=-1.5,exit=0.0 → +132.9%(146건,승률74%,4/4) — **헤드라인 교체**(구: HMA +90.5%)
+  - **LINK: 롱온리** buy=-2.5,exit=0.5 (buy-2.5~-3.0 전체행 8칸 역대급) → +196.2%(123건,승률69%,4/4, 추가확정)
+  - **XRP: 롱온리** buy=-2.0,exit=-0.5 (행 대부분 3칸) → +164.2%(145건,승률67%,4/4, 추가확정)
+파일: strategies/confirmed/weighted_close_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
