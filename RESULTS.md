@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (30개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (31개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -45,15 +45,13 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | **ETH** | Coppock Curve | 롱숏 | +12.1% | **+166.7%** | 93 | 72% |
 | **XRP** | McGinley Dynamic 괴리 | 롱숏 | +194.2% | **+196.0%** | 207 | 71% |
 | **BNB** | HMA 괴리% | 롱온리 | +95.7% | +90.5% | 107 | 69% |
-| **SOL** | Ulcer Index (z-score) | 롱온리 | +73.3% | **+306.1%** ⚠️승률45% | 128 | 45% |
+| **SOL** | Pivot Point 괴리 | 롱숏 | +73.3% | **+311.9%** | 211 | 66% |
 | **LINK** | Qstick (시가 사용) | 롱온리 | +7.5% | **+262.9%** | 165 | — |
 | **ETC** | VWAP 괴리 | 롱숏 | −83.2% | **+79.1%** | 139 | 65% |
 | **BTC** | KST | 롱숏 | +169.6% | **+32.5%** | 18 | 83% |
 
 **핵심**: 9개 코인 전부 최소 1개 이상 견고한 지표로 확정. DOT·LTC·ETH는 보유 대비 압도적으로 앞섰고,
 반대로 BTC는 강세장 원조 코인이라 "그냥 보유"를 이기지 못했다 (아래 3번 국면 분석 참고).
-**SOL의 승률(45%)이 유독 낮은 건 오타가 아니다** — Ulcer Index 기반 SOL 전략은 자주 손절하되
-이길 때 크게 이기는 비대칭 구조라, 다른 전략들(대부분 승률 60~90%대)과 리스크 성격이 다르다.
 
 ---
 
@@ -97,12 +95,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - HMA = WMA(2×WMA(종가,10)−WMA(종가,20), 4) — 일반 이동평균보다 지연이 훨씬 짧음
 - **진입**: 괴리 < −2% & 종가>MA200 · **청산**: 괴리 > 0%
 
-### SOL — Ulcer Index z-score (buy=−1.25, exit=0.0, 롱온리)
-파일: [`strategies/confirmed/ulcer_backtest.py`](strategies/confirmed/ulcer_backtest.py)
-- UlcerIndex = sqrt(mean(최근고점대비 하락%², 14)) — "얼마나 깊고 오래 하락 중인가"(고통의 크기)만 측정, z-score로 양방향화
-- **진입**: z < −1.25 (평소보다 하락 고통이 유난히 심함) & 종가>MA200 · **청산**: z > 0.0
-- ⚠️ **승률 45%** — 다른 확정 전략과 달리 자주 손절하고 이길 때 크게 먹는 구조. 실전 적용 시 큰 손실 연속 구간(드로다운)을 버틸 각오 필요
-- (참고: 기존 대표였던 VWAP, 그 전 KST, OBV도 여전히 확정 상태 — 각각 4년 +235.7%(104건,승률74%), +106.7%(47건), +79.1%(10건). "추가 확정 지표" 표 참고)
+### SOL — Pivot Point 괴리 (buy=−3.0, exit=0.5, 롱숏)
+파일: [`strategies/confirmed/pivot_backtest.py`](strategies/confirmed/pivot_backtest.py)
+- PP(피벗) = (전일고가+전일저가+전일종가)/3 — 봉마다 롤링 계산 아니고 **전일 OHLC로 하루 고정된 기준선**을 씀(다른 채널 지표들과 갱신 방식이 다름)
+- **롱 진입**: 괴리 < −3.0% & 종가>MA200 · **청산**: 괴리 > 0.5% · **숏**: 대칭
+- (참고: 기존 대표였던 Ulcer Index(승률45%, 자주손절·크게먹는 비대칭구조), 그 전 VWAP·KST·OBV도 여전히 확정 상태 — 각각 4년 +306.1%(128건,승률45%), +235.7%(104건), +106.7%(47건), +79.1%(10건). "추가 확정 지표" 표 참고)
 
 ### LINK — Qstick (buy=−1.5, exit=0.5, 롱온리)
 파일: [`strategies/confirmed/qstick_backtest.py`](strategies/confirmed/qstick_backtest.py)
@@ -144,6 +141,8 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | VWAP 괴리 | SOL (구 대표, Ulcer Index로 교체됨) | 4년 +235.7%(104건, 승률74%) — 여전히 확정 상태 | [`vwap_backtest.py`](strategies/confirmed/vwap_backtest.py) |
 | Mass Index (범위 확장/수축) | SOL(롱숏 +68%) | 고가-저가 범위를 이중EMA 비율로 측정, 기각된 Chaikin Volatility와 다른 계산식 | [`mass_index_backtest.py`](strategies/confirmed/mass_index_backtest.py) |
 | Volume Zone Oscillator | BNB(롱온리 +59%) | 거래량 중 상승봉 비중을 EMA비율로 정규화, -100~100 유계 | [`vzo_backtest.py`](strategies/confirmed/vzo_backtest.py) |
+| Ulcer Index | SOL (구 대표, Pivot Point로 교체됨) | 4년 +306.1%(128건, 승률45%⚠️) — 여전히 확정 상태이나 승률 이례적으로 낮음 | [`ulcer_backtest.py`](strategies/confirmed/ulcer_backtest.py) |
+| Pivot Point 괴리 (전일 OHLC 고정 기준선) | DOT(롱숏 +281%), XRP(롱숏 +156%), BNB(롱숏 +78%) | 봉단위 롤링 아닌 일단위 고정 갱신 — SOL 헤드라인 포함 4코인 확정 | [`pivot_backtest.py`](strategies/confirmed/pivot_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |
