@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (23개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (24개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -45,10 +45,10 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | **ETH** | Coppock Curve | 롱숏 | +12.1% | **+166.7%** | 93 | 72% |
 | **XRP** | Ichimoku 구름중심 괴리 | 롱온리 | +194.2% | +77.4% | 25 | 92% |
 | **BNB** | HMA 괴리% | 롱온리 | +95.7% | +90.5% | 107 | 69% |
-| **SOL** | OBV (z-score) | 롱온리 | +73.3% | +79.1% | 10 | 90% |
+| **SOL** | KST | 롱온리 | +73.3% | **+106.7%** | 47 | 77% |
 | **LINK** | Qstick (시가 사용) | 롱온리 | +7.5% | **+262.9%** | 165 | — |
 | **ETC** | PPO | 롱숏 | −83.2% | +35.6% | 6 | 83% |
-| **BTC** | Coppock Curve | 롱숏 | +169.6% | +11.1% | 4 | 100% |
+| **BTC** | KST | 롱숏 | +169.6% | **+32.5%** | 18 | 83% |
 
 **핵심**: 9개 코인 전부 최소 1개 이상 견고한 지표로 확정. DOT·LTC·ETH는 보유 대비 압도적으로 앞섰고,
 반대로 BTC는 강세장 원조 코인이라 "그냥 보유"를 이기지 못했다 (아래 3번 국면 분석 참고).
@@ -72,11 +72,17 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - 괴리% = (종가−POC)/종가×100
 - **진입**: 괴리 < −2% (공정가치보다 싸게 거래) & 종가>MA200 · **청산**: 괴리 > 1%
 
-### ETH / BTC — Coppock Curve (롱숏)
+### ETH — Coppock Curve (buy=−6, exit=2, 롱숏)
 파일: [`strategies/confirmed/coppock_backtest.py`](strategies/confirmed/coppock_backtest.py) (내부적으로 `hma_backtest.py`의 WMA 함수 재사용)
 - Coppock = WMA(ROC(14봉)+ROC(11봉), 10) — 원래 월봉 장기저점 포착용 지표를 시간봉에 맞게 적용
-- **ETH 진입**: Coppock < −6 & 종가>MA200(롱) / >6 & 종가<MA200(숏) · **청산**: ±2
-- **BTC 진입**: Coppock < −12(롱) / >12(숏) · **청산**: ±2 (BTC는 변동성이 낮아 더 극단적인 값 요구)
+- **진입**: Coppock < −6 & 종가>MA200(롱) / >6 & 종가<MA200(숏) · **청산**: ±2
+
+### BTC — KST (buy=−35, exit=10, 롱숏)
+파일: [`strategies/confirmed/kst_backtest.py`](strategies/confirmed/kst_backtest.py)
+- KST = 1·SMA(ROC10,10) + 2·SMA(ROC15,10) + 3·SMA(ROC20,10) + 4·SMA(ROC30,15) — 4개 시간축 모멘텀 가중합
+- **진입**: KST < −35 & 종가>MA200(롱) / >35 & 종가<MA200(숏) · **청산**: ±10
+- BTC는 거래가 워낙 드물어(4년 18건) 기존 Coppock(4건)보다 훨씬 통계적으로 신뢰 가능해진 대표 교체.
+  Coppock도 여전히 확정 상태 — 4년 +11.1%, "추가 확정 지표" 표 참고
 
 ### XRP — Ichimoku 구름중심 괴리 (buy=−4, exit=−1, 롱온리)
 파일: [`strategies/confirmed/ichimoku_backtest.py`](strategies/confirmed/ichimoku_backtest.py)
@@ -88,10 +94,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - HMA = WMA(2×WMA(종가,10)−WMA(종가,20), 4) — 일반 이동평균보다 지연이 훨씬 짧음
 - **진입**: 괴리 < −2% & 종가>MA200 · **청산**: 괴리 > 0%
 
-### SOL — OBV z-score (buy=−2.0, exit=0.5, 롱온리)
-파일: [`strategies/confirmed/obv_backtest.py`](strategies/confirmed/obv_backtest.py)
-- OBV = 누적(종가상승시 +거래량, 하락시 −거래량), 절대값 스케일이 코인마다 달라 롤링 z-score로 정규화
-- **진입**: z < −2.0 & 종가>MA200 · **청산**: z > 0.5
+### SOL — KST (buy=−35, exit=20, 롱온리)
+파일: [`strategies/confirmed/kst_backtest.py`](strategies/confirmed/kst_backtest.py)
+- KST = 1·SMA(ROC10,10) + 2·SMA(ROC15,10) + 3·SMA(ROC20,10) + 4·SMA(ROC30,15) — 4개 시간축 모멘텀 가중합
+- **진입**: KST < −35 & 종가>MA200 · **청산**: KST > 20
+- (참고: 기존 대표였던 OBV z-score도 여전히 확정 상태 — [`obv_backtest.py`](strategies/confirmed/obv_backtest.py), 4년 +79.1%. "추가 확정 지표" 표 참고)
 
 ### LINK — Qstick (buy=−1.5, exit=0.5, 롱온리)
 파일: [`strategies/confirmed/qstick_backtest.py`](strategies/confirmed/qstick_backtest.py)
@@ -120,6 +127,9 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | NVI (스마트머니 거래량) | BTC (롱온리 전용) | 거래량 감소일에만 누적 — "조용한 매집" 포착 | [`nvi_backtest.py`](strategies/confirmed/nvi_backtest.py) |
 | TRIX (3중평활 모멘텀) | ETC | EMA를 3번 중첩 후 변화율 | [`trix_backtest.py`](strategies/confirmed/trix_backtest.py) |
 | Ehlers COG (무게중심) | LINK (버그 수정 후 재확정) | 최근 N개 가격의 가중무게중심, z-score 정규화 | [`cog_backtest.py`](strategies/confirmed/cog_backtest.py) |
+| Coppock Curve | BTC (구 대표, KST로 교체됨) | 4년 +11.1%(4건) — 여전히 확정 상태, 거래가 적어 대표에서 밀림 | [`coppock_backtest.py`](strategies/confirmed/coppock_backtest.py) |
+| OBV z-score | SOL (구 대표, KST로 교체됨) | 4년 +79.1%(10건) — 여전히 확정 상태 | [`obv_backtest.py`](strategies/confirmed/obv_backtest.py) |
+| KST (4시간축 ROC 가중합) | DOT(롱숏 +138%), LTC(롱온리 +46%) | Coppock/TRIX와 달리 4개 기간 ROC를 1:2:3:4 가중합산 | [`kst_backtest.py`](strategies/confirmed/kst_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |
