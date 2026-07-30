@@ -382,6 +382,13 @@
 
 | Heikin-Ashi 괴리(종가-HA종가) | 최초 임계값(-2.0%)이 실제 분포(±0.7%대)보다 훨씬 커서 대부분 무거래. 재보정 후에도 4/4 없음, 최대 3/4(DOT,SOL,ETH) | HA괴리는 태생적으로 작고 즉시 되돌아가는 노이즈라 프레임과 안 맞음, 기각 |
 
+## ⭐ 신규 확정 (루프 49회차)
+- **Trend Intensity Index(TII) — 가격변화가 아니라 "MA 대비 위/아래 위치"에 RSI로직 적용.**
+  분포가 0/100에 크게 몰림(5%=0,95%=100).
+  - **LINK: 롱온리** buy=30,exit=40 (exit=40 열 3칸 연속) → +170.7%(264건,승률65%,4/4, 추가확정)
+  - ETC: 3/4가 최선 → 미확정
+파일: strategies/confirmed/tii_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
