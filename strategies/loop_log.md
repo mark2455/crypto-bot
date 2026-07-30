@@ -354,6 +354,16 @@
   - 나머지: 4/4 없음 → 미확정
 파일: strategies/confirmed/twiggs_backtest.py
 
+## ⭐⭐⭐ 신규 확정 (루프 45회차 — BTC 또 개선, 이번엔 수익 4배)
+- **Vertical Horizontal Filter(VHF) — 방향성 오실레이터가 아니라 "추세 vs 횡보"를 재는
+  스칼라 게이지.** 다른 지표들과 접근 자체가 다름("낮은 VHF=횡보중 잠깐 쉬는 구간"+MA200방향
+  을 매수신호로 사용, 극단값+되돌림이 아님)인데도 BTC에서 역대 최고수익.
+  - **BTC: 롱온리** buy=0.25,exit=0.50 (exit0.45~0.50 열에서 대부분 4/4, 역대급 견고) → +225.7%
+    (224건, 승률54%, 4/4) — **헤드라인 교체**(구: Twiggs +56.1%, 322건 — 거래수는 줄지만
+    224건도 충분, 수익은 4배)
+  - BNB: 3/4가 최선 → 미확정
+파일: strategies/confirmed/vhf_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
