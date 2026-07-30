@@ -420,6 +420,14 @@
   - ETC/SOL: 4/4 없음 → 미확정
 파일: strategies/confirmed/vw_tsi_backtest.py
 
+## ⭐⭐⭐ 신규 확정 (루프 56회차 — 3코인, ETH 역대급 견고블록)
+- **Volume-Weighted PPO(VWMA 기반) — gain/loss 가중 아닌 평균 자체를 VWMA로 교체하는 새 접근.**
+  - **DOT: 롱숏** buy=-2.0,exit=0.0 → +163.0%(103건,승률65%,4/4, 추가확정)
+  - **ETH: 롱숏** buy -2.0~-3.0 3개행 전부(12칸) 역대급 견고 → buy=-2.0,exit=1.0 →
+    +138.7%(50건,승률72%,4/4, 추가확정)
+  - **BTC: 롱숏** buy -1.5~-2.5 넓은블록 → buy=-2.0,exit=1.0 → +37.1%(18건,승률89%,4/4, 추가확정)
+파일: strategies/confirmed/vw_ppo_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
