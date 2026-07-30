@@ -327,6 +327,15 @@
   - SOL: 단일 고립셀만 4/4 → 미확정
 파일: strategies/confirmed/gann_hla_backtest.py
 
+## ⭐⭐ 신규 확정 (루프 42회차 — 3코인, 전부 추가확정)
+- **Random Walk Index(RWI) — 가격변화를 무작위보행 이론치(ATR×√N) 대비 배율로 측정.**
+  기각된 Efficiency Ratio/Choppiness와 목적은 비슷하나 계산식 다름.
+  - **XRP: 롱온리** buy=-2.0,exit=0.0 (buy-1.75~-2.0×exit0~0.5 블록) → +41.5%(51건,승률65%,4/4)
+  - **BNB: 롱온리** buy=-2.0,exit=0.5 → +35.6%(45건,승률80%,4/4)
+  - **DOT: 롱숏** buy=-2.0 행 전체(4칸) 역대급 견고 → buy=-2.0,exit=0.5 → +208.1%(125건,승률74%,4/4)
+  - 전부 기존 헤드라인에 못 미쳐 추가확정으로만 기록
+파일: strategies/confirmed/rwi_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
