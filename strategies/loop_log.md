@@ -411,6 +411,8 @@
   - **BNB: 롱온리** buy=25,exit=45 (행 3칸 연속) → +38.2%(223건,승률68%,4/4, 추가확정)
 파일: strategies/confirmed/vw_rsi_backtest.py
 
+| Volume-Weighted CMO(VW-RSI 성공 패턴을 CMO에 적용) | DOT buy=-60,exit=+20 단일 고립셀만 4/4(사방 전부 3/4), 나머지 코인 전부 4/4 없음, 롱숏은 대부분 마이너스 | 같은 "거래량 가중" 아이디어라도 평활방식(EMA vs 롤링합)에 따라 결과가 다름을 확인, 기각 |
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
