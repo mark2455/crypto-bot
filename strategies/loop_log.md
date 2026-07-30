@@ -186,5 +186,14 @@
   - DOT/LINK/XRP/ETC/BTC/BNB: 3/4가 최선 → 미확정
 파일: strategies/confirmed/pvo_backtest.py
 
+## ⭐⭐ 신규 확정 (루프 26회차 — 이번 탐색 최다 확정, 3코인)
+- **Ease of Movement(EOM, z-score)** — "거래량 대비 가격 이동거리"를 나눗셈으로 측정, 기존 거래량
+  지표(OBV/Force Index/Chaikin/PVO) 전부와 메커니즘 다름. 코인별로 최적 방향이 갈림:
+  - **DOT: 롱숏대칭** (buy=-1.75,exit=0.5, 넓은 연속블록) → 4년 +279.4%(221건, 4/4). 롱온리도 4/4지만 +157%로 더 낮아서 롱숏 채택
+  - **LINK: 롱온리** (롱숏은 3년차 -23%로 3/4 하락) → buy=-1.75,exit=0.5, 4년 +99.4%(137건, 4/4)
+  - **BNB: 롱온리** (롱숏은 2년차 -23%로 3/4 하락) → buy=-2.5,exit=1.0, 4년 +111.5%(44건, 4/4)
+  - SOL: buy=-1.50,exit=0.5 단일 고립셀만 4/4(양옆 전부 3/4) → **우연 판정, 미확정**
+파일: strategies/confirmed/eom_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
