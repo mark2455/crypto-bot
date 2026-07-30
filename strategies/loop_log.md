@@ -178,5 +178,13 @@
   - LINK/SOL/BNB: 격자탐색 전 구간 3/4가 최선 → 미확정
 파일: strategies/confirmed/force_index_backtest.py
 
+## ⭐ 신규 확정 (루프 25회차)
+- **Percentage Volume Oscillator(PVO) 롱온리** — PPO를 거래량에 적용(가격 방향 전혀 안 봄, 순수 거래량 모멘텀). 롱숏대칭은 거의 전 코인 마이너스라 기각.
+  - **SOL: buy=-24 행이 exit −10~+10 5칸 전부 4/4** (역대급 견고) — 최대 buy=-24,exit=+10 → +130.1%(95건, 승률58%)
+  - **ETH: exit=+10 열이 buy −26~−32 4칸 전부 4/4** (견고) — 최대 buy=-28,exit=+10 → +74.6%(102건, 승률59%)
+  - LTC는 buy=-32 단일셀만 4/4(양옆 -30/-34는 2/4) → **고립셀=우연 판정, 미확정**
+  - DOT/LINK/XRP/ETC/BTC/BNB: 3/4가 최선 → 미확정
+파일: strategies/confirmed/pvo_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
