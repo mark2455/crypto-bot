@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (28개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (29개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -142,6 +142,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | VWAP 괴리 (거래량가중평균) | DOT(롱숏 +163%), LINK(롱온리 +188%), ETH(롱숏 +76%), XRP(롱온리 +123%), BNB(롱숏 +29%) | 시간가중 아닌 거래량가중 평균 — SOL·ETC 헤드라인 포함 총 7코인 확정, BTC만 미확정 | [`vwap_backtest.py`](strategies/confirmed/vwap_backtest.py) |
 | Linear Regression Channel z-score | LINK(+97%), BNB(+40%) | 매 시점 최소제곱 회귀직선을 새로 피팅, 잔차 표준편차로 정규화. BTC 겨냥했으나 못 잡음 | [`linreg_backtest.py`](strategies/confirmed/linreg_backtest.py) |
 | VWAP 괴리 | SOL (구 대표, Ulcer Index로 교체됨) | 4년 +235.7%(104건, 승률74%) — 여전히 확정 상태 | [`vwap_backtest.py`](strategies/confirmed/vwap_backtest.py) |
+| Mass Index (범위 확장/수축) | SOL(롱숏 +68%) | 고가-저가 범위를 이중EMA 비율로 측정, 기각된 Chaikin Volatility와 다른 계산식 | [`mass_index_backtest.py`](strategies/confirmed/mass_index_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |

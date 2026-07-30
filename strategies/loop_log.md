@@ -277,6 +277,14 @@
   - BTC/ETH: 최대 3/4, 4/4 없음 → 미확정 (억지로 겨냥 안 함, 지시대로)
 파일: strategies/confirmed/ulcer_backtest.py
 
+## ⭐ 신규 확정 (루프 36회차 — 소규모)
+- **Mass Index — 범위(고가-저가) 이중EMA 비율의 25봉 합산.** 기각된 Chaikin Volatility와
+  다른 계산식(비율의 합산 vs EMA된 범위의 변화율)이지만 결과도 소규모.
+  - **SOL: 롱숏** buy=-1.5,exit=-0.5 (exit -0.5/0 두칸 연속, 얇은 블록) → +68%(4/4, 추가확정)
+  - ETH: buy=-1.5,exit=0.0 단일 고립셀만 4/4 → 미확정(우연 판정)
+  - LINK: 3/4가 최선 → 미확정
+파일: strategies/confirmed/mass_index_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
