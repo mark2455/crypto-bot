@@ -256,5 +256,18 @@
   - BTC: 이 격자 범위에서 4/4 없음 → 미확정 (여전히 KST가 BTC 대표)
 파일: strategies/confirmed/vwap_backtest.py
 
+## ⭐ 신규 확정 (루프 34회차 — BTC 겨냥했으나 실패, 대신 2코인 소규모 확정)
+- **Linear Regression Channel z-score** — 매 시점 최소제곱 회귀직선을 새로 피팅(이동평균 계열과
+  다른 메커니즘). BTC를 넓은 범위(buy −1.0~−3.0 × exit −1.0~1.0)로 집중 탐색했으나 **최대 2/4로
+  여전히 못 잡음** — BTC는 계속 KST가 대표로 유지.
+  - **LINK: 롱온리** buy=-2.0,exit=0.0 (exit=0/0.5 두칸 연속, 얇은 블록) → +97%(4/4, 추가확정)
+  - **BNB: 롱온리** buy=-2.25,exit=-0.5 (exit=-0.5 열 3칸 연속) → +40%(4/4, 추가확정)
+  - DOT/XRP/ETC: 산발적 3/4 또는 체커보드(XRP buy=-3.0 exit=±0.5만★, 사이 exit=0 실패) → 미확정
+  - SOL: 단일 고립셀만 4/4 → 미확정
+파일: strategies/confirmed/linreg_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
+- BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
+  BTC는 낮은 변동성/거래빈도 특성상 이 프레임워크(1시간봉+MA200+극단값되돌림) 자체와 안 맞을 수 있음.
+  앞으로 BTC 확정을 억지로 노리기보다 자연스럽게 나오면 반영하는 정도로 우선순위 낮출 것
