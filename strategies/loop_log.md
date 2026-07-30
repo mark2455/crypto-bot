@@ -345,6 +345,15 @@
   - DOT/XRP: 3/4가 최선 → 미확정
 파일: strategies/confirmed/bollinger_backtest.py
 
+## ⭐⭐⭐ 신규 확정 (루프 44회차 — BTC 드디어 안정적으로 확정, 헤드라인 교체)
+- **Twiggs Money Flow — Chaikin 개선판(True Range 사용, 갭까지 반영).**
+  - **BTC: 롱온리** buy=-1.0,exit=0.5 (buy-1.0~-1.5×exit0~0.5 6칸 견고블록) → +56.1%
+    (**322건**, 승률58%, 4/4) — **헤드라인 교체**(구: KST +32.5%, 18건). BTC는 Coppock(4건)→
+    KST(18건)→이번(322건)으로 거래수가 극적으로 늘어 신뢰도가 가장 높아진 대표
+  - **DOT: 롱온리** buy=-1.75,exit=0.0 → +95.4%(133건,승률61%,4/4, 추가확정)
+  - 나머지: 4/4 없음 → 미확정
+파일: strategies/confirmed/twiggs_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —

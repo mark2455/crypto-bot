@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (35개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (36개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -48,7 +48,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | **SOL** | Pivot Point 괴리 | 롱숏 | +73.3% | **+311.9%** | 211 | 66% |
 | **LINK** | FRAMA 괴리 | 롱온리 | +7.5% | **+301.1%** | 198 | 65% |
 | **ETC** | FRAMA 괴리 | 롱온리 | −83.2% | **+100.9%** | 168 | 66% |
-| **BTC** | KST | 롱숏 | +169.6% | **+32.5%** | 18 | 83% |
+| **BTC** | Twiggs Money Flow | 롱온리 | +169.6% | **+56.1%** | 322 | 58% |
 
 **핵심**: 9개 코인 전부 최소 1개 이상 견고한 지표로 확정. DOT·LTC·ETH는 보유 대비 압도적으로 앞섰고,
 반대로 BTC는 강세장 원조 코인이라 "그냥 보유"를 이기지 못했다 (아래 3번 국면 분석 참고).
@@ -77,12 +77,13 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - Coppock = WMA(ROC(14봉)+ROC(11봉), 10) — 원래 월봉 장기저점 포착용 지표를 시간봉에 맞게 적용
 - **진입**: Coppock < −6 & 종가>MA200(롱) / >6 & 종가<MA200(숏) · **청산**: ±2
 
-### BTC — KST (buy=−35, exit=10, 롱숏)
-파일: [`strategies/confirmed/kst_backtest.py`](strategies/confirmed/kst_backtest.py)
-- KST = 1·SMA(ROC10,10) + 2·SMA(ROC15,10) + 3·SMA(ROC20,10) + 4·SMA(ROC30,15) — 4개 시간축 모멘텀 가중합
-- **진입**: KST < −35 & 종가>MA200(롱) / >35 & 종가<MA200(숏) · **청산**: ±10
-- BTC는 거래가 워낙 드물어(4년 18건) 기존 Coppock(4건)보다 훨씬 통계적으로 신뢰 가능해진 대표 교체.
-  Coppock도 여전히 확정 상태 — 4년 +11.1%, "추가 확정 지표" 표 참고
+### BTC — Twiggs Money Flow (buy=−1.0, exit=0.5, 롱온리)
+파일: [`strategies/confirmed/twiggs_backtest.py`](strategies/confirmed/twiggs_backtest.py)
+- Chaikin의 개선판 — 고가-저가 대신 True Range(갭 포함)로 자금흐름 계산, z-score 정규화
+- **진입**: z < −1.0 & 종가>MA200 · **청산**: z > 0.5
+- BTC는 거래가 유독 드물어 계속 대표가 바뀌어왔음(Coppock 4건→KST 18건→**이번 322건**) —
+  거래수가 극적으로 늘어 통계적 신뢰도가 가장 높아진 대표 교체. KST(+32.5%,18건), Coppock(+11.1%,4건)
+  도 여전히 확정 상태, "추가 확정 지표" 표 참고
 
 ### XRP — McGinley Dynamic 괴리 (buy=−2.0, exit=0.0, 롱숏)
 파일: [`strategies/confirmed/mcginley_backtest.py`](strategies/confirmed/mcginley_backtest.py)
@@ -149,6 +150,8 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Gann High-Low Activator | BNB(롱온리 +84%) | 상승/하락 상태에 따라 저가/고가 이동평균을 지지·저항선으로 전환하는 2진 상태기계 | [`gann_hla_backtest.py`](strategies/confirmed/gann_hla_backtest.py) |
 | Random Walk Index | XRP(롱온리 +42%), BNB(롱온리 +36%), DOT(롱숏 +208%) | 가격변화를 무작위보행 이론치(ATR×√N) 대비 배율로 측정 | [`rwi_backtest.py`](strategies/confirmed/rwi_backtest.py) |
 | Bollinger Bands %B | BNB(롱온리 +84%), LINK(롱온리 +99%) | Keltner와 같은 채널개념, ATR 대신 표준편차로 변동성 측정. MA200 필터 적용 후 정상 작동 확인 | [`bollinger_backtest.py`](strategies/confirmed/bollinger_backtest.py) |
+| KST | BTC (구 대표, Twiggs로 교체됨) | 4년 +32.5%(18건, 승률83%) — 여전히 확정 상태 | [`kst_backtest.py`](strategies/confirmed/kst_backtest.py) |
+| Twiggs Money Flow (True Range 기반) | DOT(롱온리 +95%) | Chaikin 개선판, 갭까지 반영한 True Range 사용 — BTC 헤드라인 포함 2코인 확정 | [`twiggs_backtest.py`](strategies/confirmed/twiggs_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |
