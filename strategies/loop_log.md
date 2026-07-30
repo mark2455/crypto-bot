@@ -430,6 +430,15 @@
 
 | Volume-Weighted TRIX(3중VWMA 평활, VW-PPO 패턴을 TRIX에 적용) | LINK/DOT 롱숏에서 ★셀이 나오지만 체커보드/고립 패턴(연속블록 아님), 나머지 코인 4/4 전혀 없음 | "VWMA 교체" 패턴이 PPO(2단 평활)에는 통했지만 TRIX(3단 평활, 노이즈 누적)에는 안 통함. 기각 |
 
+## ⭐⭐ 신규 확정 (루프 58회차 — LTC 1코인, "VWMA 교체" 계열과 완전히 다른 새 아이디어)
+- **Coefficient of Variation(변동계수) z-score — std/mean으로 스케일 제거한 순수 상대분산도. Bollinger·ATR계열·Ulcer와 전부 다른 메커니즘.**
+  - **LTC: 롱온리** buy=-1.4 고정, exit -0.4~+0.2 4칸 연속 4/4 (buy축 인접값은 2~3/4로 좁음,
+    Force Index DOT과 동일한 "단축 라인" 형태) → buy=-1.4,exit=-0.2 → +107.5%(64건,승률64%,4/4)
+    LTC 기존 대표(Volume Profile POC +207.8%)보다 낮아 헤드라인 교체 없이 추가확정만
+  - 나머지 8코인: 롱온리·롱숏 모두 최고 3/4 이하 → 미확정
+  - ETC 롱숏: 고립셀 1개(buy=-1.8,exit=-0.6)뿐 → 기각(미확정 처리)
+파일: strategies/confirmed/coeff_variation_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
