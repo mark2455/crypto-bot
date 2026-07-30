@@ -212,5 +212,14 @@
   - ETC: buy=0.02,exit=0.7 단일 고립셀 → 미확정
 파일: strategies/confirmed/donchian_backtest.py
 
+## ⭐⭐ 신규 확정 (루프 29회차 — 3코인, 최초로 "시가" 사용한 지표)
+- **Qstick(z-score) — 지금까지 유일하게 시가를 쓰는 지표.** (종가-시가) 평균으로 캔들 몸통
+  방향 측정. 기각된 BOP와 개념은 겹치나 계산식(평활화된 절대크기 평균 vs 봉당 비율) 다름.
+  - **LINK: 롱온리** buy=-1.5,exit=0.5 (buy -1.75~-2.0×exit 0~0.5 연속블록) → +262.9%(165건, 4/4)
+  - **BNB: 롱온리** buy=-1.5,exit=0.0 (buy -1.5~-2.5×exit -0.5~0 넓은 블록) → +84.7%(172건, 4/4)
+  - **DOT: 롱숏대칭이 우수** buy=-1.75,exit=0.0 (행 전체 3칸 연속) → 롱숏 +176.2%(204건, 4/4)
+  - SOL: buy=-1.00과 buy=-1.75 두 지점만 4/4, 사이(−1.25,−1.50)는 전부 3/4인 갭 패턴 → **미확정**
+파일: strategies/confirmed/qstick_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)

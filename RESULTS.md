@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (22개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (23개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -46,7 +46,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | **XRP** | Ichimoku 구름중심 괴리 | 롱온리 | +194.2% | +77.4% | 25 | 92% |
 | **BNB** | HMA 괴리% | 롱온리 | +95.7% | +90.5% | 107 | 69% |
 | **SOL** | OBV (z-score) | 롱온리 | +73.3% | +79.1% | 10 | 90% |
-| **LINK** | Chaikin Oscillator | 롱온리 | +7.5% | +74.3% | 164 | 60% |
+| **LINK** | Qstick (시가 사용) | 롱온리 | +7.5% | **+262.9%** | 165 | — |
 | **ETC** | PPO | 롱숏 | −83.2% | +35.6% | 6 | 83% |
 | **BTC** | Coppock Curve | 롱숏 | +169.6% | +11.1% | 4 | 100% |
 
@@ -93,10 +93,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - OBV = 누적(종가상승시 +거래량, 하락시 −거래량), 절대값 스케일이 코인마다 달라 롤링 z-score로 정규화
 - **진입**: z < −2.0 & 종가>MA200 · **청산**: z > 0.5
 
-### LINK — Chaikin Oscillator (buy=−1.5, exit=0, 롱온리)
-파일: [`strategies/confirmed/chaikin_osc_backtest.py`](strategies/confirmed/chaikin_osc_backtest.py)
-- ADL(누적자금흐름)에 MACD(3,10) 적용 후 z-score 정규화
-- **진입**: z < −1.5 & 종가>MA200 · **청산**: z > 0
+### LINK — Qstick (buy=−1.5, exit=0.5, 롱온리)
+파일: [`strategies/confirmed/qstick_backtest.py`](strategies/confirmed/qstick_backtest.py)
+- Qstick = SMA(종가−시가, 14) — 지금까지 유일하게 **시가**를 사용하는 지표(캔들 몸통 방향), z-score 정규화
+- **진입**: z < −1.5 & 종가>MA200 · **청산**: z > 0.5
+- (참고: 기존 대표였던 Chaikin Oscillator도 여전히 확정 상태 — [`chaikin_osc_backtest.py`](strategies/confirmed/chaikin_osc_backtest.py), buy=−1.5,exit=0, 4년 +74.3%. "추가로 확정된 지표" 표 참고)
 
 ### ETC — PPO (buy=−2, exit=1, 롱숏)
 파일: [`strategies/confirmed/ppo_backtest.py`](strategies/confirmed/ppo_backtest.py)
@@ -124,6 +125,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |
 | CCI (전형가격+평균절대편차) | BNB | 종가 대신 전형가격, 표준편차 대신 평균절대편차로 정규화. 롱온리만, BNB만 확정 | [`cci_backtest.py`](strategies/confirmed/cci_backtest.py) |
 | Donchian Channel %Position | BNB(+80%), XRP(+59%), LINK(+97%) | 평활화 없는 순수 N봉 최고/최저가 채널. 롱온리만 확정 | [`donchian_backtest.py`](strategies/confirmed/donchian_backtest.py) |
+| Qstick (시가 사용, 캔들몸통 방향) | LINK(+263%,롱온리), BNB(+85%,롱온리), DOT(+176%,롱숏) | 유일하게 시가를 쓰는 지표. (종가-시가) 평균 | [`qstick_backtest.py`](strategies/confirmed/qstick_backtest.py) |
 
 ---
 
