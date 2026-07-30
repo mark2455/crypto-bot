@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (25개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (26개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -45,9 +45,9 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | **ETH** | Coppock Curve | 롱숏 | +12.1% | **+166.7%** | 93 | 72% |
 | **XRP** | McGinley Dynamic 괴리 | 롱숏 | +194.2% | **+196.0%** | 207 | 71% |
 | **BNB** | HMA 괴리% | 롱온리 | +95.7% | +90.5% | 107 | 69% |
-| **SOL** | KST | 롱온리 | +73.3% | **+106.7%** | 47 | 77% |
+| **SOL** | VWAP 괴리 | 롱온리 | +73.3% | **+235.7%** | 104 | 74% |
 | **LINK** | Qstick (시가 사용) | 롱온리 | +7.5% | **+262.9%** | 165 | — |
-| **ETC** | PPO | 롱숏 | −83.2% | +35.6% | 6 | 83% |
+| **ETC** | VWAP 괴리 | 롱숏 | −83.2% | **+79.1%** | 139 | 65% |
 | **BTC** | KST | 롱숏 | +169.6% | **+32.5%** | 18 | 83% |
 
 **핵심**: 9개 코인 전부 최소 1개 이상 견고한 지표로 확정. DOT·LTC·ETH는 보유 대비 압도적으로 앞섰고,
@@ -95,11 +95,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - HMA = WMA(2×WMA(종가,10)−WMA(종가,20), 4) — 일반 이동평균보다 지연이 훨씬 짧음
 - **진입**: 괴리 < −2% & 종가>MA200 · **청산**: 괴리 > 0%
 
-### SOL — KST (buy=−35, exit=20, 롱온리)
-파일: [`strategies/confirmed/kst_backtest.py`](strategies/confirmed/kst_backtest.py)
-- KST = 1·SMA(ROC10,10) + 2·SMA(ROC15,10) + 3·SMA(ROC20,10) + 4·SMA(ROC30,15) — 4개 시간축 모멘텀 가중합
-- **진입**: KST < −35 & 종가>MA200 · **청산**: KST > 20
-- (참고: 기존 대표였던 OBV z-score도 여전히 확정 상태 — [`obv_backtest.py`](strategies/confirmed/obv_backtest.py), 4년 +79.1%. "추가 확정 지표" 표 참고)
+### SOL — VWAP 괴리 (buy=−3.0, exit=1.0, 롱온리)
+파일: [`strategies/confirmed/vwap_backtest.py`](strategies/confirmed/vwap_backtest.py)
+- VWAP(20) = 최근 20봉의 (전형가격×거래량) 합 / 거래량 합 — 시간가중 아닌 **거래량가중** 평균
+- **진입**: 괴리 < −3.0% & 종가>MA200 · **청산**: 괴리 > 1.0%
+- (참고: 기존 대표였던 KST, 그 이전 OBV도 여전히 확정 상태 — 각각 4년 +106.7%(47건), +79.1%(10건). "추가 확정 지표" 표 참고)
 
 ### LINK — Qstick (buy=−1.5, exit=0.5, 롱온리)
 파일: [`strategies/confirmed/qstick_backtest.py`](strategies/confirmed/qstick_backtest.py)
@@ -107,10 +107,11 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 - **진입**: z < −1.5 & 종가>MA200 · **청산**: z > 0.5
 - (참고: 기존 대표였던 Chaikin Oscillator도 여전히 확정 상태 — [`chaikin_osc_backtest.py`](strategies/confirmed/chaikin_osc_backtest.py), buy=−1.5,exit=0, 4년 +74.3%. "추가로 확정된 지표" 표 참고)
 
-### ETC — PPO (buy=−2, exit=1, 롱숏)
-파일: [`strategies/confirmed/ppo_backtest.py`](strategies/confirmed/ppo_backtest.py)
-- PPO = (EMA12−EMA26)/EMA26×100 (MACD를 %로 표현해 코인간 스케일 문제 해결)
-- **롱 진입**: PPO < −2 & 종가>MA200 · **청산**: PPO > 1 · **숏**: 대칭
+### ETC — VWAP 괴리 (buy=−3.0, exit=1.0, 롱숏)
+파일: [`strategies/confirmed/vwap_backtest.py`](strategies/confirmed/vwap_backtest.py)
+- VWAP(20) = 최근 20봉의 (전형가격×거래량) 합 / 거래량 합 — 시간가중 아닌 **거래량가중** 평균
+- **롱 진입**: 괴리 < −3.0% & 종가>MA200 · **청산**: 괴리 > 1.0% · **숏**: 대칭
+- (참고: 기존 대표였던 PPO, Connors RSI, TRIX도 여전히 확정 상태 — PPO 4년 +35.6%(6건). "추가 확정 지표" 표 참고)
 
 ### + 기준선(Baseline) — Connors RSI 롱숏대칭
 파일: [`strategies/confirmed/connors_ls_backtest.py`](strategies/confirmed/connors_ls_backtest.py) (지표 자체는 루트의 [`connors_rsi_backtest.py`](connors_rsi_backtest.py)), 견고성 검사: [`connors_robustness.py`](strategies/confirmed/connors_robustness.py), 최종 저장본: [`connors_rsi_ls.py`](strategies/confirmed/connors_rsi_ls.py)
@@ -133,6 +134,9 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | KST (4시간축 ROC 가중합) | DOT(롱숏 +138%), LTC(롱온리 +46%) | Coppock/TRIX와 달리 4개 기간 ROC를 1:2:3:4 가중합산 | [`kst_backtest.py`](strategies/confirmed/kst_backtest.py) |
 | Ichimoku 구름중심 괴리 | XRP (구 대표, McGinley로 교체됨) | 4년 +77.4%(25건) — 여전히 확정 상태 | [`ichimoku_backtest.py`](strategies/confirmed/ichimoku_backtest.py) |
 | McGinley Dynamic 괴리 | DOT(롱온리 +145%), LINK(롱온리 +60%), BNB(롱온리 +59%), SOL(롱온리 +40%) | 재귀식 적응형 이동평균(가격 변화 속도에 따라 반응속도 자체가 바뀜) | [`mcginley_backtest.py`](strategies/confirmed/mcginley_backtest.py) |
+| KST | SOL (구 대표, VWAP로 교체됨) | 4년 +106.7%(47건) — 여전히 확정 상태 | [`kst_backtest.py`](strategies/confirmed/kst_backtest.py) |
+| PPO | ETC (구 대표, VWAP로 교체됨) | 4년 +35.6%(6건) — 여전히 확정 상태 | [`ppo_backtest.py`](strategies/confirmed/ppo_backtest.py) |
+| VWAP 괴리 (거래량가중평균) | DOT(롱숏 +163%), LINK(롱온리 +188%), ETH(롱숏 +76%), XRP(롱온리 +123%), BNB(롱숏 +29%) | 시간가중 아닌 거래량가중 평균 — SOL·ETC 헤드라인 포함 총 7코인 확정, BTC만 미확정 | [`vwap_backtest.py`](strategies/confirmed/vwap_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |
