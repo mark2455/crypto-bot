@@ -14,7 +14,7 @@ crypto-bot/
 │   fetch_history.py, indicator_analysis.py,
 │   connors_rsi_backtest.py                    ← 최초 확정 전략(기준선), 다른 파일들이 공유 참조
 ├── strategies/
-│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (32개 파일)
+│   ├── confirmed/    ← ✅ 4/4년 검증 통과, 9개 코인에 실제 적용 가능한 전략 (33개 파일)
 │   ├── rejected/     ← ❌ 검증에서 탈락/기각된 지표·패턴·조합 (33개 파일, 이유는 아래 표)
 │   └── loop_log.md   ← 30개 이상 지표를 하나씩 검증한 상세 원본 로그
 ├── experiments/
@@ -146,6 +146,7 @@ PYTHONPATH=. venv/bin/python strategies/rejected/rvi_backtest.py
 | Qstick | LINK (구 대표, FRAMA로 교체됨) | 4년 +262.9%(165건) — 여전히 확정 상태 | [`qstick_backtest.py`](strategies/confirmed/qstick_backtest.py) |
 | VWAP 괴리 | ETC (구 대표, FRAMA로 교체됨) | 4년 +79.1%(139건, 승률65%) — 여전히 확정 상태 | [`vwap_backtest.py`](strategies/confirmed/vwap_backtest.py) |
 | FRAMA 괴리 (프랙탈 차원 적응형 MA) | XRP(롱숏 +122%), SOL(롱온리 +195%) | McGinley와 다른 프랙탈기하학 기반 반응속도 조절 — LINK·ETC 헤드라인 포함 4코인 확정 | [`frama_backtest.py`](strategies/confirmed/frama_backtest.py) |
+| Gann High-Low Activator | BNB(롱온리 +84%) | 상승/하락 상태에 따라 저가/고가 이동평균을 지지·저항선으로 전환하는 2진 상태기계 | [`gann_hla_backtest.py`](strategies/confirmed/gann_hla_backtest.py) |
 | Elder's Force Index (가격변화×거래량) | DOT, ETC | (종가−전봉종가)×거래량, EMA13+z-score. 롱온리만 확정(롱숏은 더 나쁨) | [`force_index_backtest.py`](strategies/confirmed/force_index_backtest.py) |
 | PVO (거래량 버전 PPO) | SOL, ETH | 가격 방향 안 보고 거래량 자체의 EMA12/26 모멘텀만 측정. 롱온리만 확정 | [`pvo_backtest.py`](strategies/confirmed/pvo_backtest.py) |
 | Ease of Movement (거래량 대비 이동거리) | DOT(롱숏 +279%), LINK·BNB(롱온리) | "저항 없이 쉽게 움직였는가"를 나눗셈으로 측정. 코인별 최적 방향 다름 | [`eom_backtest.py`](strategies/confirmed/eom_backtest.py) |

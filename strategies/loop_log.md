@@ -319,6 +319,14 @@
   - LTC: 4/4 없음 → 미확정
 파일: strategies/confirmed/frama_backtest.py
 
+## ⭐ 신규 확정 (루프 41회차)
+- **Gann High-Low Activator — 저가/고가 이동평균을 상태전환식 지지/저항선으로 사용.**
+  순수 스탑앤리버스(설계원칙2 위반 우려)는 피하고 괴리%+극단값+되돌림 프레임으로 적용.
+  - **BNB: 롱온리** buy=-2.5,exit=0.0 (buy -2.5~-3.0 전체 행 8칸 견고블록) → +84%(4/4, 추가확정)
+  - XRP/ETC/BTC: 3/4가 최선 → 미확정
+  - SOL: 단일 고립셀만 4/4 → 미확정
+파일: strategies/confirmed/gann_hla_backtest.py
+
 ## 다음 시도 후보
 - (새 카테고리 계속 탐색 — "RVI/Volatility RSI" 계열은 이미 소진, 이름 유사한 지표 재확인 전 vol_rsi_backtest.py·rvi_backtest.py 먼저 대조할 것)
 - BTC는 KST(18건)가 유일하게 신뢰할만한 대표. VWAP·McGinley·LinReg 모두 BTC는 못 잡음 —
